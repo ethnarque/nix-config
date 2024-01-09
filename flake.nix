@@ -14,7 +14,7 @@
   outputs = inputs @ { self, darwin, home-manager, nixpkgs, nur, ... }:
     {
       nixosConfigurations."evgeniya" = let username = "pml"; in nixpkgs.lib.nixosSystem rec {
-        system = "aarch64-linux";
+        system = "x86_64-linux";
         specialArgs = {
           inherit inputs system username;
           mod = name: "./modules/${name}";
@@ -28,6 +28,10 @@
             (import ./machines/evgeniya)
             (import ./users/pml)
             inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t480
+            inputs.agenix.nixosModules.default
+            {
+              environment.systemPackages = [ inputs.agenix.packages.${system}.default ];
+            }
             {
               home-manager.useGlobalPkgs = true;
               home-manager.extraSpecialArgs = {
