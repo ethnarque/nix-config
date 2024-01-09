@@ -1,10 +1,10 @@
 { config, lib, pkgs, username, ... }:
 with lib;
 let
-  cfg = config.modules.tmux;
+  cfg = config.apps.tmux;
 in
 {
-  options.modules.tmux = {
+  options.apps.tmux = {
     enable = mkEnableOption "tmux cli";
   };
 

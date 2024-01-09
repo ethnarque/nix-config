@@ -1,10 +1,10 @@
 { config, lib, username, ... }:
 with lib;
 let
-  cfg = config.modules.gh;
+  cfg = config.apps.gh;
 in
 {
-  options.modules.gh = {
+  options.apps.gh = {
     enable = mkEnableOption "github cli tool";
   };
   config = mkIf cfg.enable {

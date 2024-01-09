@@ -46,11 +46,11 @@
       };
     };
   };
-  modules.gh.enable = true;
-  modules.kitty.enable = true;
-  modules.mpv.enable = true;
-  modules.tmux.enable = true;
-  modules.zsh = {
+  apps.gh.enable = true;
+  apps.kitty.enable = true;
+  apps.mpv.enable = true;
+  apps.tmux.enable = true;
+  apps.zsh = {
     enable = true;
     plugins = [ ];
   };

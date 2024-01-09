@@ -1,9 +1,9 @@
 { config, lib, pkgs, username, ... }:
 let
-  cfg = config.modules.kitty;
+  cfg = config.apps.kitty;
 in
 {
-  options.modules.kitty = {
+  options.apps.kitty = {
     enable = lib.mkEnableOption "kitty terminal";
     font = {
       name = lib.mkOption {

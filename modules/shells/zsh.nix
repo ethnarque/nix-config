@@ -1,7 +1,7 @@
 { config, lib, pkgs, system, username, ... }:
 with lib;
 let
-  cfg = config.modules.zsh;
+  cfg = config.apps.zsh;
 
   # pulled from GitHub
   # https://github.com/nix-community/home-manager/blob/master/modules/programs/zsh.nix
@@ -36,7 +36,7 @@ let
   });
 in
 {
-  options.modules.zsh = {
+  options.apps.zsh = {
     enable = mkEnableOption "zsh shell";
 
     plugins = mkOption {

@@ -1,10 +1,10 @@
 { config, lib, pkgs, username, ... }:
 let
-  cfg = config.modules.mpv;
+  cfg = config.apps.mpv;
 in
 with lib;
 {
-  options.modules.mpv = {
+  options.apps.mpv = {
     enable = mkEnableOption "mpv";
   };
 
