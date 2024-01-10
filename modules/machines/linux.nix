@@ -1,17 +1,16 @@
 { config, lib, pkgs, username, ... }:
-with lib;
 let
   cfg = config.machines.linux;
 in
 {
-  options.machines.linux = {
+  options.machines.linux = with lib;{
     enable = mkEnableOption "linux system defaults";
     hostName = mkOption {
       type = types.str;
     };
   };
 
-  config = mkIf cfg.enable (mkMerge [
+  config = with lib; mkIf cfg.enable (mkMerge [
     (if !(builtins.elem systems [ "aarch64-darwin" "x86_64-darwin" ]) then
       {
         boot.kernelPackages = pkgs.linuxPackages_latest;

@@ -1,7 +1,6 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    agenix.url = "github:ryantm/agenix";
     darwin = {
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -9,6 +8,7 @@
     home-manager.url = "github:nix-community/home-manager";
     nur.url = github:nix-community/NUR;
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
   outputs = inputs @ { self, darwin, home-manager, nixpkgs, nur, ... }:
@@ -27,11 +27,8 @@
             nur.nixosModules.nur
             (import ./machines/evgeniya)
             (import ./users/pml)
+            inputs.sops-nix.nixosModules.sops
             inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t480
-            inputs.agenix.nixosModules.default
-            {
-              environment.systemPackages = [ inputs.agenix.packages.${system}.default ];
-            }
             {
               home-manager.useGlobalPkgs = true;
               home-manager.extraSpecialArgs = {
