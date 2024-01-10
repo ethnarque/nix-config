@@ -51,7 +51,7 @@ in
           #   wdisplays # tool to configure displays
         ];
 
-        xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+        # xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
         home-manager.users.${username} = { config, ... }: {
           dconf.enable = true;

@@ -11,6 +11,9 @@ in
   config = mkIf cfg.enable {
     home-manager.users.${username} = {
       gtk.enable = true;
+      # gtk.font = {
+      #   name = "SF Pro";
+      # };
     };
   };
 }

@@ -42,10 +42,10 @@ in
 
         users.users.${username}.extraGroups = [ "video" ];
 
-        xdg.portal = {
-          enable = true;
-          wlr.enable = true;
-        };
+        # xdg.portal = {
+        #   enable = true;
+        #   wlr.enable = true;
+        # };
       }
     else
       { })

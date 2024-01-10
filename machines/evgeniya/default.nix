@@ -13,9 +13,7 @@
   serve.samba.enable = true;
   serve.ssh.enable = true;
 
-  compositors.sway.enable = true;
-
-  # appearances.font.enable = true;
+  compositors.gnome.enable = true;
 
   modules.fonts = {
     enable = true;
@@ -61,16 +59,21 @@
   #   keyMap = "us";
   #   useXkbConfig = true; # use xkbOptions in tty.
   # };
-
-
+  console = {
+    earlySetup = true;
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
+    packages = with pkgs; [ terminus_font ];
+    keyMap = "us";
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -79,8 +82,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.05"; # Did you read the comment?
-
-
-
 }
-
