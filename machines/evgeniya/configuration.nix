@@ -13,6 +13,13 @@
     supportedFilesystems = [ "btrfs" ];
   };
 
+  console = {
+    earlySetup = true;
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
+    packages = with pkgs; [ terminus_font ];
+    keyMap = "us";
+  };
+
   time.timeZone = "Europe/Paris";
   # Fix for my Broadcom card when using phone tethering
   networking.networkmanager.wifi.scanRandMacAddress = false;
