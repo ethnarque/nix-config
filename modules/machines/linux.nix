@@ -26,6 +26,7 @@ in
 
         users.users."${username}" = {
           isNormalUser = true;
+          hashedPassword = "$2b$05$HFTDaVAbnEmFAEmQhw56q.kvUst.Rq6IuG3VjQRIpDdS9kmL8zGFe";
           extraGroups = [ "networkmanager" "video" "wheel" ]; # Enable ‘sudo’ for the user.
           shell = pkgs.zsh;
           packages = with pkgs; [
