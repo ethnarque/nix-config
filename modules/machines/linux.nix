@@ -23,6 +23,9 @@ in
         networking.firewall.enable = true;
         networking.networkmanager.enable = true;
 
+        networking.networkmanager.wifi.backend = "iwd";
+        networking.wireless.iwd.enable = true;
+
         users.users."${username}" = {
           isNormalUser = true;
           hashedPassword = "$2b$05$HFTDaVAbnEmFAEmQhw56q.kvUst.Rq6IuG3VjQRIpDdS9kmL8zGFe";
