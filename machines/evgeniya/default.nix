@@ -65,4 +65,8 @@
     enable = true;
     enableSSHSupport = true;
   };
+
+  environment.systemPackages = with pkgs; [
+    papirus-icon-theme
+  ];
 }
