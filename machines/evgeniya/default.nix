@@ -1,7 +1,9 @@
 {
   config,
   lib,
-  pkgs, username, ...
+  pkgs,
+  username,
+  ...
 }: {
   imports = [
     ./configuration.nix
@@ -11,11 +13,6 @@
   machines.linux.enable = true;
   machines.linux.hostName = "evgeniya";
   machines.linux.hardware.intel.enable = true;
-
-  serve.avahi.enable = true;
-  serve.printing.enable = true;
-  serve.samba.enable = true;
-  serve.ssh.enable = true;
 
   compositors.gnome.enable = true;
 

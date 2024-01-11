@@ -1,17 +1,28 @@
-{ config, lib, pkgs, system, username, ... }:
-let
-  cfg = config.compositors.gnome;
-in
 {
-
+  config,
+  lib,
+  pkgs,
+  system,
+  username,
+  ...
+}: let
+  cfg = config.compositors.gnome;
+in {
   options.compositors.gnome = {
     enable = lib.mkEnableOption "sway wm";
   };
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
-    (if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ]) then
-      {
-        compositors.wayland.enable = true;
+    (
+      if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
+      then {
+        compositors.minimal.enable = true;
+        # compositors.wayland.enable = true;
+
+        serve.avahi.enable = true;
+        serve.printing.enable = true;
+        serve.samba.enable = true;
+        serve.ssh.enable = true;
 
         hardware.pulseaudio.enable = false;
 
@@ -26,8 +37,7 @@ in
           (with pkgs; [
             gnome-tour
           ])
-          ++
-          (with pkgs.gnome; [
+          ++ (with pkgs.gnome; [
             gnome-music
             gnome-terminal
             epiphany # web browser
@@ -57,9 +67,8 @@ in
             };
           };
         };
-
       }
-    else
-      { })
+      else {}
+    )
   ]);
 }

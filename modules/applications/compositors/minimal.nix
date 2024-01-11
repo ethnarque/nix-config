@@ -6,10 +6,12 @@
   username,
   ...
 }: let
-  cfg = config.compositors.wayland;
+  cfg = config.compositors.minimal;
 in {
-  options.compositors.wayland = {
-    enable = lib.mkEnableOption "common wm";
+  options.compositors.minimal = {
+    enable = lib.mkEnableOption ''
+      minimal defaults for compositors and window managers
+    '';
   };
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
@@ -20,10 +22,6 @@ in {
         machines.hardware.sound.enable = true;
 
         environment.sessionVariables.NIXOS_OZONE_WL = "1";
-
-        programs.light.enable = true;
-
-        users.users.${username}.extraGroups = ["video"];
       }
       else {}
     )
