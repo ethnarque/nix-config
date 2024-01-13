@@ -21,6 +21,8 @@ in {
         machines.hardware.bluetooth.enable = true;
         machines.hardware.sound.enable = true;
 
+        appearance.gtk.enable = true;
+
         environment.sessionVariables.NIXOS_OZONE_WL = "1";
       }
       else {}

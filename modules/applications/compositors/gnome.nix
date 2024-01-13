@@ -17,7 +17,7 @@ in {
       if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
       then {
         compositors.minimal.enable = true;
-        # compositors.wayland.enable = true;
+        compositors.appearance.enable = true;
 
         serve.avahi.enable = true;
         serve.printing.enable = true;

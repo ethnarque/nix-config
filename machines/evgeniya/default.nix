@@ -15,14 +15,18 @@
   machines.linux.hardware.intel.enable = true;
 
   compositors.gnome.enable = true;
+  compositors.appearance.packages = with pkgs; [
+    iosevka
+    (callPackage ../../packages/apple-fonts.nix {})
+  ];
 
-  modules.fonts = {
-    enable = true;
-    packages = with pkgs; [
-      iosevka
-      (callPackage ../../packages/apple-fonts.nix {})
-    ];
-  };
+  # modules.fonts = {
+  #   enable = true;
+  #   packages = with pkgs; [
+  #     iosevka
+  #     (callPackage ../../packages/apple-fonts.nix {})
+  #   ];
+  # };
 
   apps.btop.enable = true;
 
@@ -65,8 +69,4 @@
     enable = true;
     enableSSHSupport = true;
   };
-
-  environment.systemPackages = with pkgs; [
-    papirus-icon-theme
-  ];
 }

@@ -79,6 +79,32 @@ in {
             "media.navigator.mediadatadecoder_vpx_enabled" = true;
           };
         };
+
+        profiles."misc" = {
+          id = 1;
+          name = "misc";
+
+          extensions = with config.nur.repos.rycee.firefox-addons;
+            cfg.extensions
+            ++ [
+              # bitwarden
+              ublock-origin
+              search-by-image
+            ];
+
+          # search = {
+          #   default = "DuckDuckGo";
+          # };
+
+          settings = {
+            "browser.startup.page" = 3;
+            "gfx.webrender.all" = true;
+            "media.ffmpeg.vaapi.enabled" = true;
+            "media.ffvpx.enabled" = false;
+            "media.rdd-vpx.enabled" = false;
+            "media.navigator.mediadatadecoder_vpx_enabled" = true;
+          };
+        };
       };
     };
   };
