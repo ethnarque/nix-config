@@ -1,10 +1,15 @@
-{ config, lib, pkgs, system, username, ... }:
-with lib;
-let
-  cfg = config.serve.samba;
-in
 {
-  options.serve.samba = {
+  config,
+  lib,
+  pkgs,
+  system,
+  username,
+  ...
+}:
+with lib; let
+  cfg = config.services'.samba;
+in {
+  options.services'.samba = {
     enable = mkEnableOption "samba";
 
     workgroup = mkOption rec {
@@ -18,13 +23,14 @@ in
 
     shares = mkOption {
       type = types.attrs;
-      default = { };
+      default = {};
     };
   };
 
   config = mkIf cfg.enable (mkMerge [
-    (if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ]) then
-      {
+    (
+      if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
+      then {
         networking.firewall.allowedTCPPorts = [
           137 # Samba: NETBIOS Name Service
           138 # Samba: NETBIOS Datagram Service
@@ -53,18 +59,20 @@ in
           #   server role = standalone server
           # '';
 
-          shares = cfg.shares // {
-            public = {
-              path = "/home/${toString username}/Public/Shared";
-              "guest ok" = "no";
-              public = "yes";
-              writable = "yes";
-              printable = "no";
-              browseable = "yes";
-              "read only" = "no";
-              comment = "Public samba share.";
+          shares =
+            cfg.shares
+            // {
+              public = {
+                path = "/home/${toString username}/Public/Shared";
+                "guest ok" = "no";
+                public = "yes";
+                writable = "yes";
+                printable = "no";
+                browseable = "yes";
+                "read only" = "no";
+                comment = "Public samba share.";
+              };
             };
-          };
         };
 
         services.samba-wsdd = {
@@ -76,7 +84,7 @@ in
           ];
         };
       }
-    else
-      { })
+      else {}
+    )
   ]);
 }

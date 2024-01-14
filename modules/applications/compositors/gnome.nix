@@ -19,10 +19,10 @@ in {
         compositors.minimal.enable = true;
         compositors.interface.enable = true;
 
-        serve.avahi.enable = true;
-        serve.printing.enable = true;
-        serve.samba.enable = true;
-        serve.ssh.enable = true;
+        services'.avahi.enable = true;
+        services'.printing.enable = true;
+        services'.samba.enable = true;
+        services'.ssh.enable = true;
 
         apps.ulauncher.enable = true;
 
