@@ -8,58 +8,73 @@
   ...
 }:
 with lib; let
-  cfg = config.compositors.appearance;
+  cfg = config.compositors.interface;
 in {
-  options.compositors.appearance = {
-    enable = lib.mkEnableOption "kitty terminal";
+  options.compositors.interface = {
+    enable = lib.mkEnableOption "appearance";
 
     fonts = {
       packages = mkOption {
         type = with types; listOf package;
-        default = [];
-      };
-    };
-
-    font = {
-      packages = lib.mkOption {
-        type = with lib.types; listOf package;
-        default = [];
+        default = with pkgs; [];
       };
 
       sans = {
         name = mkOption {
           type = types.str;
-          default = "SF Pro";
+          default = "DejaVu Sans";
         };
+
         size = mkOption {
-          type = types.number;
-          default = 11;
+          type = types.int;
+          default = 12;
         };
-        package = mkOption {};
       };
 
       serif = {
         name = mkOption {
           type = types.str;
-          default = "SF Pro";
+          default = "Liberation Serif";
         };
-        package = mkOption {};
+
+        size = mkOption {
+          type = types.int;
+          default = 11;
+        };
       };
 
       monospace = {
-        name = mkOption {};
-        package = mkOption {};
+        name = mkOption {
+          type = types.str;
+          default = "Source Code Pro";
+        };
+
+        size = mkOption {
+          type = types.int;
+          default = 11;
+        };
       };
     };
 
-    icon = {
+    icons = {
       package = mkOption {
-        type = with types; nullOr package;
-        default = pkgs.papirus-icon-theme;
+        type = types.package;
+        default = pkgs.morewaita-icon-theme;
       };
+
       name = mkOption {
-        type = types.str;
-        default = "Papirus";
+        type = with types; nullOr str;
+        default = "MoreWaita";
+      };
+
+      darkTheme = mkOption {
+        type = with types; nullOr str;
+        default = null;
+      };
+
+      lightTheme = mkOption {
+        type = with types; nullOr str;
+        default = null;
       };
     };
   };
@@ -71,40 +86,28 @@ in {
         fonts = {
           fontconfig.enable = true;
           fontDir.enable = true;
-          packages = with pkgs;
-            cfg.packages
-            ++ [
-              (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
-            ];
+          packages = cfg.fonts.packages;
         };
+
+        environment.systemPackages = with pkgs; [
+        ];
 
         home-manager.users.${username} = {
           gtk = {
             enable = true;
             font = {
-              name = cfg.font.sans.name;
-              size = cfg.font.sans.size;
+              name = cfg.fonts.sans.name;
+              size = cfg.fonts.sans.size;
             };
             iconTheme = {
-              package = cfg.icon.package;
-              name = cfg.icon.name;
+              package = cfg.icons.package;
+              name = cfg.icons.name;
             };
           };
-
-          # dconf.settings = {
-          #   "org.gnome.desktop.interface" = {
-          #     document-font-name = let f = cfg.font.serif; in "${f.name} ${toString f.size}";
-          #     monospace-font-name = let f = cfg.font.monospace; in "${f.name} ${toString f.size}";
-          #   };
-          # };
         };
       }
       else {
-        fonts.fonts = with pkgs;
-          cfg.packages
-          ++ [
-            (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
-          ];
+        fonts.fonts = cfg.fonts.packages;
       }
     )
   ]);

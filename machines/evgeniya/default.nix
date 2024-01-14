@@ -4,7 +4,9 @@
   pkgs,
   username,
   ...
-}: {
+}: let
+  apple-fonts = pkgs.callPackage ../../packages/apple-fonts.nix {};
+in {
   imports = [
     ./configuration.nix
     ./hardware-configuration.nix
@@ -15,18 +17,24 @@
   machines.linux.hardware.intel.enable = true;
 
   compositors.gnome.enable = true;
-  compositors.appearance.packages = with pkgs; [
-    iosevka
-    (callPackage ../../packages/apple-fonts.nix {})
-  ];
-
-  # modules.fonts = {
-  #   enable = true;
-  #   packages = with pkgs; [
-  #     iosevka
-  #     (callPackage ../../packages/apple-fonts.nix {})
-  #   ];
-  # };
+  compositors.interface.fonts = {
+    packages = with pkgs; [
+      apple-fonts
+      iosevka
+    ];
+    sans = {
+      name = "SF Pro";
+      size = 11;
+    };
+    serif = {
+      name = "New York Medium";
+      size = 11;
+    };
+    monospace = {
+      name = "Iosevka";
+      size = 11;
+    };
+  };
 
   apps.btop.enable = true;
 

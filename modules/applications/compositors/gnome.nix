@@ -17,7 +17,7 @@ in {
       if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
       then {
         compositors.minimal.enable = true;
-        compositors.appearance.enable = true;
+        compositors.interface.enable = true;
 
         serve.avahi.enable = true;
         serve.printing.enable = true;
@@ -53,6 +53,7 @@ in {
 
         systemd.services."getty@tty1".enable = false;
         systemd.services."autovt@tty1".enable = false;
+        services.gnome.gnome-browser-connector.enable = true;
 
         environment.gnome.excludePackages =
           (with pkgs; [
