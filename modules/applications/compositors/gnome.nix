@@ -24,6 +24,8 @@ in {
         serve.samba.enable = true;
         serve.ssh.enable = true;
 
+        apps.ulauncher.enable = true;
+
         hardware.pulseaudio.enable = false;
 
         services.xserver.enable = true;
