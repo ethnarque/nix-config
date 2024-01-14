@@ -19,43 +19,15 @@ in {
         compositors.minimal.enable = true;
         compositors.interface.enable = true;
 
-        services'.avahi.enable = true;
-        services'.printing.enable = true;
-        services'.samba.enable = true;
-        services'.ssh.enable = true;
-
-        apps.ulauncher.enable = true;
-
-        hardware.pulseaudio.enable = false;
-
+        # GNOME
         services.xserver.enable = true;
         services.xserver.displayManager.gdm.enable = true;
         services.xserver.desktopManager.gnome.enable = true;
-        services.xserver.libinput = {
-          enable = true;
-        };
+        services.xserver.libinput.enable = true;
 
-        nixpkgs.overlays = [
-          (final: prev: {
-            gnome = prev.gnome.overrideScope' (gnomeFinal: gnomePrev: {
-              mutter = gnomePrev.mutter.overrideAttrs (old: {
-                src = pkgs.fetchgit {
-                  url = "https://gitlab.gnome.org/vanvugt/mutter.git";
-                  # GNOME 45: triple-buffering-v4-45
-                  rev = "0b896518b2028d9c4d6ea44806d093fd33793689";
-                  sha256 = "sha256-mzNy5GPlB2qkI2KEAErJQzO//uo8yO0kPQUwvGDwR4w=";
-                };
-              });
-            });
-          })
-        ];
-        # nixpkgs.config.allowAliases = false;
-        services.xserver.displayManager.autoLogin.enable = true;
-        services.xserver.displayManager.autoLogin.user = "pml";
-
-        systemd.services."getty@tty1".enable = false;
-        systemd.services."autovt@tty1".enable = false;
         services.gnome.gnome-browser-connector.enable = true;
+
+        hardware.pulseaudio.enable = false;
 
         environment.gnome.excludePackages =
           (with pkgs; [
@@ -75,22 +47,42 @@ in {
             atomix # puzzle game
           ]);
 
-        home-manager.users.${username} = {
-          home.packages = with pkgs; [
-            wl-clipboard
-            waypipe
-          ];
+        # GNOME 45: triple-buffering-v4-45
+        nixpkgs.overlays = [
+          (final: prev: {
+            gnome = prev.gnome.overrideScope' (gnomeFinal: gnomePrev: {
+              mutter = gnomePrev.mutter.overrideAttrs (old: {
+                src = pkgs.fetchgit {
+                  url = "https://gitlab.gnome.org/vanvugt/mutter.git";
+                  rev = "0b896518b2028d9c4d6ea44806d093fd33793689";
+                  sha256 = "sha256-mzNy5GPlB2qkI2KEAErJQzO//uo8yO0kPQUwvGDwR4w=";
+                };
+              });
+            });
+          })
+        ];
+        # nixpkgs.config.allowAliases = false;
 
-          home.pointerCursor = {
-            name = "Adwaita";
-            package = pkgs.gnome.adwaita-icon-theme;
-            size = 24;
-            x11 = {
-              enable = true;
-              defaultCursor = "Adwaita";
-            };
-          };
-        };
+        # Autologin
+        services.xserver.displayManager.autoLogin.enable = true;
+        services.xserver.displayManager.autoLogin.user = "pml";
+
+        systemd.services."getty@tty1".enable = false;
+        systemd.services."autovt@tty1".enable = false;
+
+        # Useful packages
+        environment.systemPackages = with pkgs; [
+          waypipe
+          wl-clipboard
+        ];
+
+        # Custom defaults
+        services'.avahi.enable = true;
+        services'.printing.enable = true;
+        services'.samba.enable = true;
+        services'.ssh.enable = true;
+
+        apps.ulauncher.enable = true;
       }
       else {}
     )
