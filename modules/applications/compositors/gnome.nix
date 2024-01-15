@@ -82,6 +82,7 @@ in {
         services'.samba.enable = true;
         services'.ssh.enable = true;
 
+        apps.kdeconnect.enable = true;
         apps.ulauncher.enable = true;
       }
       else {}
