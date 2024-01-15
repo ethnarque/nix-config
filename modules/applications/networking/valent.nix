@@ -5,10 +5,10 @@
   username,
   ...
 }: let
-  cfg = config.apps.kdeconnect;
+  cfg = config.apps.valent;
 in
   with lib; {
-    options.apps.kdeconnect = {
+    options.apps.valent = {
       enable = mkEnableOption ''
         KDEConnect
       '';
