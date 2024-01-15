@@ -17,6 +17,7 @@ in {
   machines.linux.hardware.intel.enable = true;
 
   compositors.gnome.enable = true;
+
   compositors.interface.fonts = {
     packages = with pkgs; [
       apple-fonts
@@ -34,6 +35,16 @@ in {
       name = "Iosevka";
       size = 11;
     };
+  };
+
+  compositors.interface.icons = {
+    name = "Papirus-Dark";
+    package = pkgs.papirus-icon-theme;
+  };
+
+  compositors.interface.cursor = {
+    name = "Bibata-Modern-Ice";
+    package = pkgs.bibata-cursors;
   };
 
   apps.btop.enable = true;
