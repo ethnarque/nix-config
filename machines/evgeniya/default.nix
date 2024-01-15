@@ -75,7 +75,12 @@ in {
 
   apps.kitty.enable = true;
 
-  apps.mpv.enable = true;
+  apps.mpv = {
+    enable = true;
+    config = {
+      gpu-context = "wayland";
+    };
+  };
 
   apps.tmux.enable = true;
 
