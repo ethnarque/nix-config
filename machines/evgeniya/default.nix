@@ -22,6 +22,7 @@ in {
     packages = with pkgs; [
       apple-fonts
       iosevka
+      (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
     ];
     sans = {
       name = "SF Pro";
