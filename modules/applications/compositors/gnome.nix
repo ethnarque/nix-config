@@ -76,6 +76,7 @@ in {
           gnome.gnome-tweaks
           gnomeExtensions.blur-my-shell
           gnomeExtensions.clipboard-indicator
+          gnomeExtensions.dash-to-dock
           gnomeExtensions.disable-workspace-switcher
           gnomeExtensions.move-clock
           gnomeExtensions.notification-banner-position
