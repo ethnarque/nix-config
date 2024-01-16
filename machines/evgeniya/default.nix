@@ -55,6 +55,8 @@ in {
     package = pkgs.bibata-cursors;
   };
 
+  apps.blackbox-terminal.enable = true;
+
   apps.btop.enable = true;
 
   apps.firefox = {
