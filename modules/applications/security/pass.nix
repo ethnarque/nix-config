@@ -18,7 +18,12 @@ in {
       if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
       then {
         home-manager.users.${username} = {
-          programs.password-store.enable = true;
+          programs.password-store = {
+            enable = true;
+            settings = {
+              PASSWORD_STORE_CLIP_TIME = "60";
+            };
+          };
         };
       }
       else {}

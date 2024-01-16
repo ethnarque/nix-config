@@ -83,6 +83,8 @@ in {
     };
   };
 
+  apps.pass.enable = true;
+
   apps.tmux.enable = true;
 
   apps.zsh = {
