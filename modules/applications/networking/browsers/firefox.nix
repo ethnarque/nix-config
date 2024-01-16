@@ -35,7 +35,12 @@ in {
         enable = true;
         package = pkgs.firefox.override {
           nativeMessagingHosts = [
-            pkgs.gnome-browser-connector
+            (optionalAttrs (config.compositors.gnome.enable) [
+              pkgs.gnome-browser-connector
+            ])
+            (optionalAttrs (config.apps.pass.enable) [
+              pkgs.passff-host
+            ])
           ];
         };
         policies = {
@@ -52,23 +57,24 @@ in {
           name = username;
 
           bookmarks =
-            cfg.bookmarks
-            ++ [
+            [
               {
                 name = "YouTube";
                 tags = ["youtube"];
                 keyword = "youtube";
                 url = "https://youtube.com";
               }
-            ];
+            ]
+            ++ cfg.bookmarks;
 
           extensions = with config.nur.repos.rycee.firefox-addons;
-            cfg.extensions
-            ++ [
+            [
               bitwarden
               ublock-origin
               search-by-image
-            ];
+              (optionalAttrs (config.apps.pass.enable) passff)
+            ]
+            ++ cfg.extensions;
 
           search = {
             default = "DuckDuckGo";
