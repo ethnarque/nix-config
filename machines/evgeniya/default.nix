@@ -12,6 +12,13 @@ in {
     ./hardware-configuration.nix
   ];
 
+  environment.systemPackages = with pkgs; [
+    android-tools
+    foliate
+    tagger
+    telegram-desktop
+  ];
+
   machines.linux.enable = true;
   machines.linux.hostName = "evgeniya";
   machines.linux.hardware.intel.enable = true;
