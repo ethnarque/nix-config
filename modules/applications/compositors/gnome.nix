@@ -37,7 +37,7 @@ in {
             gnome-console
           ])
           ++ (with pkgs.gnome; [
-            # gnome-music
+            gnome-music
             gnome-terminal
             epiphany # web browser
             geary # email reader
