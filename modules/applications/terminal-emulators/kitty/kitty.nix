@@ -4,25 +4,26 @@
   pkgs,
   username,
   ...
-}: let
+}:
+with lib; let
   cfg = config.apps.kitty;
 in {
   options.apps.kitty = {
-    enable = lib.mkEnableOption "kitty terminal";
+    enable = mkEnableOption "kitty terminal";
     font = {
-      name = lib.mkOption {
-        type = lib.types.str;
-        default = "Iosevka";
+      name = mkOption {
+        type = types.str;
+        default = config.compositors.interface.fonts.monospace.name;
       };
 
-      size = lib.mkOption {
-        type = lib.types.float;
-        default = 11.0;
+      size = mkOption {
+        type = types.float;
+        default = config.compositors.interface.fonts.monospace.size;
       };
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     home-manager.users.${username} = {
       programs.kitty = {
         enable = true;

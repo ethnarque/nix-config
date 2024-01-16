@@ -33,15 +33,15 @@ in {
     ];
     sans = {
       name = "SF Pro";
-      size = 11;
+      size = 11.0;
     };
     serif = {
       name = "New York Medium";
-      size = 11;
+      size = 11.0;
     };
     monospace = {
       name = "Iosevka";
-      size = 11;
+      size = 11.0;
     };
   };
 

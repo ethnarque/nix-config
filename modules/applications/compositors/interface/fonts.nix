@@ -23,8 +23,8 @@ in {
       };
 
       size = mkOption {
-        type = types.int;
-        default = 12;
+        type = types.float;
+        default = 12.0;
       };
     };
 
@@ -35,8 +35,8 @@ in {
       };
 
       size = mkOption {
-        type = types.int;
-        default = 11;
+        type = types.float;
+        default = 11.0;
       };
     };
 
@@ -47,8 +47,8 @@ in {
       };
 
       size = mkOption {
-        type = types.int;
-        default = 11;
+        type = types.float;
+        default = 11.0;
       };
     };
   };
