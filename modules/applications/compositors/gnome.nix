@@ -26,8 +26,9 @@ in {
         services.xserver.libinput.enable = true;
 
         services.gnome.gnome-browser-connector.enable = true;
-        services.gnome.tracker.enable = false;
 
+        services.gnome.tracker-miners.enable = false;
+        services.gnome.tracker.enable = false;
         hardware.pulseaudio.enable = false;
 
         environment.gnome.excludePackages =
