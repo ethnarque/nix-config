@@ -65,13 +65,19 @@ in {
 
         # Autologin
         services.xserver.displayManager.autoLogin.enable = true;
-        services.xserver.displayManager.autoLogin.user = "pml";
+        services.xserver.displayManager.autoLogin.user = "${username}";
 
         systemd.services."getty@tty1".enable = false;
         systemd.services."autovt@tty1".enable = false;
 
         # Useful packages
         environment.systemPackages = with pkgs; [
+          gnome.gnome-tweaks
+          gnomeExtensions.blur-my-shell
+          gnomeExtensions.clipboard-indicator
+          gnomeExtensions.disable-workspace-switcher
+          gnomeExtensions.move-clock
+          gnomeExtensions.notification-banner-position
           waypipe
           wl-clipboard
         ];
