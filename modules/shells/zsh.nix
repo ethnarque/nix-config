@@ -54,7 +54,11 @@ in {
             pics = "$HOME/Pictures";
           };
           dotDir = ".config/zsh";
-          history.path = "${config.xdg.dataHome}/zsh/zsh_history";
+          history = {
+            expireDuplicatesFirst = true;
+            ignoreAllDups = true;
+            path = "${config.xdg.dataHome}/zsh/zsh_history";
+          };
           initExtraBeforeCompInit = ''
             TYPEWRITTEN_PROMPT_LAYOUT="pure_verbose"
 
