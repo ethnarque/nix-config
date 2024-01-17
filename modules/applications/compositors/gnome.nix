@@ -20,6 +20,7 @@ in {
         compositors.interface.enable = true;
 
         # GNOME
+        hardware.pulseaudio.enable = false;
         services.xserver.enable = true;
         services.xserver.displayManager.gdm.enable = true;
         services.xserver.desktopManager.gnome.enable = true;
@@ -29,7 +30,6 @@ in {
 
         services.gnome.tracker-miners.enable = false;
         services.gnome.tracker.enable = false;
-        hardware.pulseaudio.enable = false;
 
         environment.gnome.excludePackages =
           (with pkgs; [
@@ -73,7 +73,7 @@ in {
         systemd.services."getty@tty1".enable = false;
         systemd.services."autovt@tty1".enable = false;
 
-        # Useful packages
+        # Useful packages and extensions
         environment.systemPackages = with pkgs; [
           gnome.gnome-tweaks
           gnomeExtensions.blur-my-shell
@@ -86,11 +86,9 @@ in {
           wl-clipboard
         ];
 
-        # Custom defaults
+        # Custom defaults apps and services
         services'.avahi.enable = true;
         services'.printing.enable = true;
-        services'.samba.enable = true;
-        services'.ssh.enable = true;
 
         apps.valent.enable = true;
         apps.ulauncher.enable = true;

@@ -51,8 +51,8 @@ in {
   };
 
   compositors.interface.cursor = {
-    name = "Bibata-Modern-Ice";
-    package = pkgs.bibata-cursors;
+    name = "Adwaita";
+    package = pkgs.gnome.adwaita-icon-theme;
   };
 
   apps.blackbox-terminal.enable = true;
@@ -105,4 +105,7 @@ in {
     enable = true;
     enableSSHSupport = true;
   };
+
+  services'.samba.enable = true;
+  services'.ssh.enable = true;
 }
