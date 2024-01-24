@@ -29,6 +29,7 @@ in {
     packages = with pkgs; [
       apple-fonts
       iosevka
+      noto-fonts-cjk
       (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
     ];
     sans = {
