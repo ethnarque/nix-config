@@ -83,7 +83,6 @@ in {
         # Useful packages and extensions
         environment.systemPackages = with pkgs; [
           gnome.gnome-tweaks
-          gnomeExtensions.blur-my-shell
           gnomeExtensions.clipboard-indicator
           gnomeExtensions.dash-to-dock
           gnomeExtensions.disable-workspace-switcher
@@ -185,21 +184,12 @@ in {
                 "disable-workspace-animation@ethnarque"
                 "Move_Clock@rmy.pobox.com"
                 "notification-position@drugo.dev"
-                "blur-my-shell@aunetx"
                 "legacyschemeautoswitcher@joshimukul29.gmail.com"
                 "valent@andyholmes.ca"
                 "clipboard-indicator@tudmotu.com"
                 "dash-to-dock@micxgx.gmail.com"
               ];
               favorite-apps = ["org.gnome.Nautilus.desktop" "org.gnome.Calendar.desktop" "firefox.desktop"];
-            };
-
-            "org/gnome/shell/extensions/blur-my-shell" = {
-              brightness = 0.65;
-            };
-
-            "org/gnome/shell/extensions/blur-my-shell/hidetopbar" = {
-              compatibility = false;
             };
 
             "org/gnome/shell/extensions/clipboard-indicator" = {
