@@ -24,7 +24,28 @@ in {
   };
 
   config = mkIf cfg.enable {
+    compositors.interface = {
+      darkModeScripts = {
+        kitty = ''
+          ${pkgs.kitty}/bin/kitty +kitten themes --reload-in=all --config-file-name "current_theme.conf" Rosé\ Pine
+        '';
+      };
+      lightModeScripts = {
+        kitty = ''
+          ${pkgs.kitty}/bin/kitty +kitten themes --reload-in=all --config-file-name "current_theme.conf" Rosé\ Pine\ Dawn
+        '';
+      };
+    };
     home-manager.users.${username} = {config, ...}: {
+      # Themes
+      home.file = {
+        kitty-themes = {
+          source = ./themes;
+          target = ".config/kitty/themes";
+          recursive = true;
+        };
+      };
+
       programs.kitty = {
         enable = true;
 
@@ -54,44 +75,6 @@ in {
         '';
 
         shellIntegration.enableZshIntegration = true;
-      };
-
-      # Themes
-      home.file = {
-        kitty-themes = {
-          source = ./themes;
-          target = ".config/kitty/themes";
-          recursive = true;
-        };
-      };
-
-      services.darkman = {
-        enable = true;
-
-        settings = {
-          lat = 45.7;
-          lng = 4.9;
-          usegeoclue = true;
-        };
-
-        darkModeScripts = {
-          gtk-theme = ''
-            ${pkgs.dconf}/bin/dconf write \
-                /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
-          '';
-          kitty = ''
-            ${pkgs.kitty}/bin/kitty +kitten themes --reload-in=all --config-file-name "current_theme.conf" Rosé\ Pine
-          '';
-        };
-        lightModeScripts = {
-          gtk-theme = ''
-            ${pkgs.dconf}/bin/dconf write \
-                /org/gnome/desktop/interface/color-scheme "'prefer-light'"
-          '';
-          kitty = ''
-            ${pkgs.kitty}/bin/kitty +kitten themes --reload-in=all --config-file-name "current_theme.conf" Rosé\ Pine\ Dawn
-          '';
-        };
       };
     };
   };
