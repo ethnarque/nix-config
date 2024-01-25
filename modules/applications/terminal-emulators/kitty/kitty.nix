@@ -24,7 +24,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home-manager.users.${username} = {
+    home-manager.users.${username} = {config, ...}: {
       programs.kitty = {
         enable = true;
 
@@ -39,14 +39,14 @@ in {
           enable_audio_bell = false;
           allow_remote_control = true;
           update_check_interval = 0;
-          window_padding_width = 12;
+          window_padding_width = 6;
           hide_window_decorations =
             if pkgs.stdenv.isDarwin
             then "titlebar-only"
             else false;
           macos_quit_when_last_window_closed = false;
           macos_option_as_alt = false;
-          wayland_titlebar_color = "system";
+          wayland_titlebar_color = "background";
         };
 
         extraConfig = ''
@@ -54,6 +54,15 @@ in {
         '';
 
         shellIntegration.enableZshIntegration = true;
+      };
+
+      # Themes
+      home.file = {
+        kitty-themes = {
+          source = ./themes;
+          target = ".config/kitty/themes";
+          recursive = true;
+        };
       };
 
       services.darkman = {
