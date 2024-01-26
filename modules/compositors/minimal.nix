@@ -22,8 +22,10 @@ in {
           dconf2nix
         ];
 
-        machines.hardware.bluetooth.enable = true;
-        machines.hardware.sound.enable = true;
+        machines.hardware = {
+          bluetooth.enable = true;
+          sound.enable = true;
+        };
 
         environment.sessionVariables.NIXOS_OZONE_WL = "1";
       }

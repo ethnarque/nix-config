@@ -9,6 +9,19 @@
 }:
 with lib; let
   cfg = config.apps.firefox;
+
+  defaultSettings = {
+    "browser.startup.page" = 3;
+    "browser.formfill.enable" = false;
+    "gfx.webrender.all" = true;
+    "media.ffmpeg.vaapi.enabled" = true;
+    "media.ffvpx.enabled" = false;
+    "media.rdd-vpx.enabled" = false;
+    "media.navigator.mediadatadecoder_vpx_enabled" = true;
+    "services.sync.prefs.sync.browser.formfill.enable" = false;
+    "signon.rememberSignons" = false;
+    "signon.prefillForms" = false;
+  };
 in {
   options.apps.firefox = {
     enable = mkEnableOption "firefox web browser";
@@ -38,6 +51,7 @@ in {
     home-manager.users.${username} = {
       programs.firefox = {
         enable = true;
+
         package = pkgs.firefox.override {
           nativeMessagingHosts = [
             (optionalAttrs (config.compositors.gnome.enable) [
@@ -48,6 +62,7 @@ in {
             ])
           ];
         };
+
         policies = {
           EnableTrackingProtection = true;
           PromptForDownloadLocation = true;
@@ -85,16 +100,7 @@ in {
             default = "DuckDuckGo";
           };
 
-          settings =
-            {
-              "browser.startup.page" = 3;
-              "gfx.webrender.all" = true;
-              "media.ffmpeg.vaapi.enabled" = true;
-              "media.ffvpx.enabled" = false;
-              "media.rdd-vpx.enabled" = false;
-              "media.navigator.mediadatadecoder_vpx_enabled" = true;
-            }
-            // cfg.settings;
+          settings = defaultSettings // cfg.settings;
         };
       };
     };

@@ -73,9 +73,15 @@ in {
       bookmarks = [
         {
           name = "GitHub - ethnarque";
-          tags = ["ethnarque" "github"];
+          tags = ["ethnarque" "vcs"];
           keyword = "github";
           url = "https://github.com/ethnarque";
+        }
+        {
+          name = "Codeberg - ethnarque";
+          tags = ["ethnarque" "vcs"];
+          keyword = "codeberg";
+          url = "https://codeberg.org/ethnarque";
         }
       ];
       settings = {
