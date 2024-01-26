@@ -14,9 +14,18 @@ in {
 
   environment.systemPackages = with pkgs; [
     android-tools
-    foliate
+    amberol
     tagger
+    foliate
+    gimp
+    jq
+    obinskit
     telegram-desktop
+    yt-dlp
+  ];
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-13.6.9"
   ];
 
   machines.linux.enable = true;
@@ -28,8 +37,9 @@ in {
   compositors.interface.fonts = {
     packages = with pkgs; [
       apple-fonts
-      iosevka
       noto-fonts-cjk
+      noto-fonts-emoji
+      iosevka
       (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
     ];
     sans = {
@@ -70,6 +80,9 @@ in {
         url = "https://github.com/ethnarque";
       }
     ];
+    settings = {
+      "mousewheel.default.delta_multiplier_y" = 25; # No scroll factor options in gnome
+    };
   };
 
   apps.git = {
@@ -108,5 +121,6 @@ in {
   };
 
   services'.samba.enable = true;
+
   services'.ssh.enable = true;
 }

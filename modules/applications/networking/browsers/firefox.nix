@@ -27,6 +27,11 @@ in {
       type = with types; listOf package;
       default = [];
     };
+
+    settings = mkOption {
+      type = types.attrs;
+      default = {};
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -80,14 +85,16 @@ in {
             default = "DuckDuckGo";
           };
 
-          settings = {
-            "browser.startup.page" = 3;
-            "gfx.webrender.all" = true;
-            "media.ffmpeg.vaapi.enabled" = true;
-            "media.ffvpx.enabled" = false;
-            "media.rdd-vpx.enabled" = false;
-            "media.navigator.mediadatadecoder_vpx_enabled" = true;
-          };
+          settings =
+            {
+              "browser.startup.page" = 3;
+              "gfx.webrender.all" = true;
+              "media.ffmpeg.vaapi.enabled" = true;
+              "media.ffvpx.enabled" = false;
+              "media.rdd-vpx.enabled" = false;
+              "media.navigator.mediadatadecoder_vpx_enabled" = true;
+            }
+            // cfg.settings;
         };
       };
     };

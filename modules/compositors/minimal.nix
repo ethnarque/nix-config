@@ -18,6 +18,10 @@ in {
     (
       if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
       then {
+        environment.systemPackages = with pkgs; [
+          dconf2nix
+        ];
+
         machines.hardware.bluetooth.enable = true;
         machines.hardware.sound.enable = true;
 
