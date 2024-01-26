@@ -21,6 +21,4 @@
   };
 
   time.timeZone = "Europe/Paris";
-  # Fix for my Broadcom card when using phone tethering
-  # networking.networkmanager.wifi.scanRandMacAddress = false;
 }
