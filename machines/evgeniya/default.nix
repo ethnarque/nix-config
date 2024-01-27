@@ -1,12 +1,8 @@
+{ config, lib, pkgs, username, ... }:
+let
+  apple-fonts = pkgs.callPackage ../../packages/apple-fonts.nix { };
+in
 {
-  config,
-  lib,
-  pkgs,
-  username,
-  ...
-}: let
-  apple-fonts = pkgs.callPackage ../../packages/apple-fonts.nix {};
-in {
   imports = [
     ./configuration.nix
     ./hardware-configuration.nix
@@ -38,7 +34,7 @@ in {
         noto-fonts-cjk
         noto-fonts-emoji
         iosevka
-        (nerdfonts.override {fonts = ["NerdFontsSymbolsOnly"];})
+        (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
       ];
       sans = {
         name = "SF Pro";
@@ -73,13 +69,13 @@ in {
       bookmarks = [
         {
           name = "GitHub - ethnarque";
-          tags = ["ethnarque" "vcs"];
+          tags = [ "ethnarque" "vcs" ];
           keyword = "github";
           url = "https://github.com/ethnarque";
         }
         {
           name = "Codeberg - ethnarque";
-          tags = ["ethnarque" "vcs"];
+          tags = [ "ethnarque" "vcs" ];
           keyword = "codeberg";
           url = "https://codeberg.org/ethnarque";
         }
@@ -127,5 +123,6 @@ in {
   services' = {
     samba.enable = true;
     ssh.enable = true;
+    tailscale.enable = true;
   };
 }
