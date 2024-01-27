@@ -1,11 +1,10 @@
-{
-  config,
-  inputs,
-  lib,
-  options,
-  pkgs,
-  username,
-  ...
+{ config
+, inputs
+, lib
+, options
+, pkgs
+, username
+, ...
 }:
 with lib; let
   cfg = config.apps.firefox;
@@ -13,6 +12,7 @@ with lib; let
   defaultSettings = {
     "browser.startup.page" = 3;
     "browser.formfill.enable" = false;
+    "browser.download.useDownloadDir" = false;
     "gfx.webrender.all" = true;
     "media.ffmpeg.vaapi.enabled" = true;
     "media.ffvpx.enabled" = false;
@@ -22,7 +22,8 @@ with lib; let
     "signon.rememberSignons" = false;
     "signon.prefillForms" = false;
   };
-in {
+in
+{
   options.apps.firefox = {
     enable = mkEnableOption "firefox web browser";
 
@@ -33,17 +34,17 @@ in {
 
     bookmarks = mkOption {
       type = with types; listOf attrs;
-      default = {};
+      default = { };
     };
 
     extensions = mkOption {
       type = with types; listOf package;
-      default = [];
+      default = [ ];
     };
 
     settings = mkOption {
       type = types.attrs;
-      default = {};
+      default = { };
     };
   };
 
@@ -65,7 +66,6 @@ in {
 
         policies = {
           EnableTrackingProtection = true;
-          PromptForDownloadLocation = true;
           SearchEngines = {
             Default = "DuckDuckGo";
           };
@@ -80,7 +80,7 @@ in {
             [
               {
                 name = "YouTube";
-                tags = ["youtube"];
+                tags = [ "youtube" ];
                 keyword = "youtube";
                 url = "https://youtube.com";
               }
@@ -102,6 +102,7 @@ in {
 
           settings = defaultSettings // cfg.settings;
         };
+
       };
     };
   };
