@@ -66,25 +66,17 @@
           ];
         };
 
-      darwinConfigurations."magda" =
-        let
-          username = "pmlogist";
-        in
-        darwin.lib.darwinSystem rec {
-          system = "aarch64-darwin";
-          specialArgs = {
-            inherit inputs system username;
-            lib = nixpkgs.lib.extend (self: super: { } // home-manager.lib);
-          };
-          modules =
-            import ./modules { lib = nixpkgs.lib; }
-            ++ [
-              home-manager.darwinModules.home-manager
-              # { environment.systemPackages = [ inputs.agenix.packages.${system}.default ]; }
-              (import ./machines/magda)
-              (import ./users/pml)
-            ];
-        };
+      darwinConfigurations.magda = mkSystem "aarch64-darwin" "pml"
+        ({ lib, modules, system, username, ... }: darwin.lib.darwinSystem {
+          inherit system;
+          specialArgs = { inherit inputs lib system username; };
+          modules = lib.flatten [
+            modules
+            home-manager.darwinModules.home-manager
+            (import ./machines/magda)
+          ];
+
+        });
 
       formatter = forAllSystems ({ pkgs, ... }: pkgs.nixpkgs-fmt);
 

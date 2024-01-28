@@ -1,10 +1,10 @@
 { config, lib, pkgs, system, username, ... }:
 with lib;
 let
-  cfg = config.homebrew;
+  cfg = config.apps.homebrew;
 in
 {
-  options.homebrew = {
+  options.apps.homebrew = {
     enable = mkEnableOption "darwin systems defaults";
 
     taps = mkOption {

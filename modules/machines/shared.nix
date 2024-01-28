@@ -11,7 +11,7 @@ in
   config = mkIf cfg.enable (mkMerge [
     # { system.checks.verifyNixPath = false; }
 
-    (if !(builtins.elem systems [ "aarch64-darwin" "x86_64-darwin" ]) then
+    (if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ]) then
       {
         nix = {
           package = pkgs.nixUnstable;
