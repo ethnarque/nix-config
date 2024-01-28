@@ -16,6 +16,7 @@ in
     gimp
     jq
     telegram-desktop
+    unrar
     yt-dlp
   ];
 
