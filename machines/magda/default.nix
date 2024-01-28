@@ -1,6 +1,12 @@
 { inputs, pkgs, username, ... }: {
   machines.darwin.enable = true;
 
+  programs.gnupg.agent.enable = true;
+
+  environment.systemPackages = with pkgs;[
+    gnupg
+  ];
+
   apps = {
     git = {
       enable = true;
@@ -18,6 +24,8 @@
       font.size = 14.0;
       font.name = "Iosevka";
     };
+
+    pass.enable = true;
 
     zsh.enable = true;
   };
