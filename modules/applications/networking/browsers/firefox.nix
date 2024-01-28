@@ -103,6 +103,19 @@ in
           settings = defaultSettings // cfg.settings;
         };
 
+        profiles."downloader" = {
+          id = 1;
+          name = "downloader";
+
+          extensions = with config.nur.repos.rycee.firefox-addons;
+            [
+              ublock-origin
+              search-by-image
+            ]
+            ++ cfg.extensions;
+
+          settings = defaultSettings // mkAfter { };
+        };
       };
     };
   };
