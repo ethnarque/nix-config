@@ -1,15 +1,15 @@
-{
-  config,
-  lib,
-  options,
-  pkgs,
-  system,
-  username,
-  ...
+{ config
+, lib
+, options
+, pkgs
+, system
+, username
+, ...
 }:
 with lib; let
   cfg = config.compositors.interface;
-in {
+in
+{
   options.compositors.interface = {
     enable = lib.mkEnableOption ''
       interface capabilities for Wayland and X11 compositors
@@ -26,7 +26,7 @@ in {
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
     (
-      if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
+      if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
       then {
         home-manager.users.${username} = {
           services.darkman = {
@@ -68,7 +68,7 @@ in {
           };
         };
       }
-      else {}
+      else { }
     )
   ]);
 }

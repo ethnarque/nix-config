@@ -1,13 +1,13 @@
-{
-  config,
-  lib,
-  pkgs,
-  username,
-  ...
+{ config
+, lib
+, pkgs
+, username
+, ...
 }:
 with lib; let
   cfg = config.apps.kitty;
-in {
+in
+{
   options.apps.kitty = {
     enable = mkEnableOption "kitty terminal";
     font = {
@@ -36,7 +36,7 @@ in {
         '';
       };
     };
-    home-manager.users.${username} = {config, ...}: {
+    home-manager.users.${username} = { config, ... }: {
       # Themes
       home.file = {
         kitty-themes = {

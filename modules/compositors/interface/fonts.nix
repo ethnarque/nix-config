@@ -1,19 +1,19 @@
-{
-  config,
-  lib,
-  options,
-  pkgs,
-  system,
-  username,
-  ...
+{ config
+, lib
+, options
+, pkgs
+, system
+, username
+, ...
 }:
 with lib; let
   cfg = config.compositors.interface.fonts;
-in {
+in
+{
   options.compositors.interface.fonts = {
     packages = mkOption {
       type = with types; listOf package;
-      default = with pkgs; [];
+      default = with pkgs; [ ];
     };
 
     sans = {
@@ -55,12 +55,12 @@ in {
 
   config = lib.mkIf config.compositors.interface.enable (lib.mkMerge [
     (
-      if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
+      if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
       then {
         fonts = {
           fontconfig.enable = true;
           fontDir.enable = true;
-          packages = cfg.packages ++ [];
+          packages = cfg.packages ++ [ ];
         };
 
         home-manager.users.${username} = {
@@ -74,7 +74,7 @@ in {
         };
       }
       else {
-        fonts.fonts = cfg.packages ++ [];
+        fonts.fonts = cfg.packages ++ [ ];
       }
     )
   ]);

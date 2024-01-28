@@ -1,15 +1,15 @@
-{
-  config,
-  lib,
-  options,
-  pkgs,
-  system,
-  username,
-  ...
+{ config
+, lib
+, options
+, pkgs
+, system
+, username
+, ...
 }:
 with lib; let
   cfg = config.compositors.interface.cursor;
-in {
+in
+{
   options.compositors.interface.cursor = {
     package = mkOption {
       type = types.package;
@@ -39,7 +39,7 @@ in {
 
   config = mkIf config.compositors.interface.enable (mkMerge [
     (
-      if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
+      if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
       then {
         home-manager.users.${username} = {
           home.pointerCursor = {
@@ -53,7 +53,7 @@ in {
           };
         };
       }
-      else {}
+      else { }
     )
   ]);
 }

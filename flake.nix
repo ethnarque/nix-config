@@ -33,37 +33,27 @@
           )
         ));
 
-      mkLib = nixpkgs:
-        nixpkgs.lib.extend (final: prev: { } // home-manager.lib);
+
+      mkSystem = system: username: fn: fn
+        (rec {
+          inherit username system;
+
+          lib = nixpkgs.lib.extend (final: prev: { } // home-manager.lib);
+
+          modules = import ./modules { inherit lib; };
+        });
     in
     {
-      formatter = forAllSystems ({ pkgs, ... }: pkgs.nixpkgs-fmt);
 
-      nixosConfigurations."evgeniya" = let username = "pml"; in
-        nixpkgs.lib.nixosSystem rec {
-          system = "x86_64-linux";
-          specialArgs = {
-            inherit inputs system username;
-            mod = name: "./modules/${name}";
-            lib = nixpkgs.lib.extend (self: super: { } // home-manager.lib);
-          };
-          modules =
-            import ./modules { lib = nixpkgs.lib; }
-            ++ [
-              home-manager.nixosModules.home-manager
-              nur.nixosModules.nur
-              (import ./machines/evgeniya)
-              (import ./users/pml)
-              inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t480
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.extraSpecialArgs = {
-                  inherit username;
-                  # lib = nixpkgs.lib.extend (self: super: { } // home-manager.lib);
-                };
-              }
-            ];
-        };
+      nixosConfigurations.evgeniya = mkSystem "x86_64-linux" "pml"
+        ({ lib, modules, system, username }: nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { inherit inputs lib system username; };
+          modules = lib.flatten [
+            modules
+            (import ./machines/evgeniya)
+          ];
+        });
 
       nixosConfigurations."nixos-vm" = let username = "pml"; in
         nixpkgs.lib.nixosSystem rec {
@@ -96,6 +86,7 @@
             ];
         };
 
+      formatter = forAllSystems ({ pkgs, ... }: pkgs.nixpkgs-fmt);
 
       devShells = forAllSystems ({ pkgs, ... }: {
         default = pkgs.mkShell {

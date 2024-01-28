@@ -1,21 +1,21 @@
-{
-  config,
-  lib,
-  pkgs,
-  system,
-  username,
-  ...
+{ config
+, lib
+, pkgs
+, system
+, username
+, ...
 }:
 with lib; let
   cfg = config.services'.avahi;
-in {
+in
+{
   options.services'.avahi = {
     enable = mkEnableOption "avahi capabilities (CUPS)";
   };
 
   config = mkIf cfg.enable (mkMerge [
     (
-      if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
+      if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
       then {
         services.avahi = {
           enable = true;
@@ -30,7 +30,7 @@ in {
           };
         };
       }
-      else {}
+      else { }
     )
   ]);
 }

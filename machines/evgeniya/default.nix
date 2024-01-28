@@ -1,11 +1,14 @@
-{ config, lib, pkgs, username, ... }:
+{ config, inputs, lib, pkgs, username, ... }:
 let
   apple-fonts = pkgs.callPackage ../../packages/apple-fonts.nix { };
 in
 {
   imports = [
-    ./configuration.nix
     ./hardware-configuration.nix
+    ./configuration.nix
+    inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t480
+    inputs.home-manager.nixosModules.home-manager
+    inputs.nur.nixosModules.nur
   ];
 
   environment.systemPackages = with pkgs; [

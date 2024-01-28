@@ -1,12 +1,13 @@
-{
-  config,
-  lib,
-  pkgs,
-  username,
-  ...
-}: let
+{ config
+, lib
+, pkgs
+, username
+, ...
+}:
+let
   cfg = config.machines.linux;
-in {
+in
+{
   options.machines.linux = with lib; {
     enable = mkEnableOption "linux system defaults";
     hostName = mkOption {
@@ -17,7 +18,7 @@ in {
   config = with lib;
     mkIf cfg.enable (mkMerge [
       (
-        if !(builtins.elem systems ["aarch64-darwin" "x86_64-darwin"])
+        if !(builtins.elem systems [ "aarch64-darwin" "x86_64-darwin" ])
         then {
           boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -35,7 +36,7 @@ in {
           users.users."${username}" = {
             isNormalUser = true;
             hashedPassword = "$2b$05$HFTDaVAbnEmFAEmQhw56q.kvUst.Rq6IuG3VjQRIpDdS9kmL8zGFe";
-            extraGroups = ["networkmanager" "video" "wheel"]; # Enable ‘sudo’ for the user.
+            extraGroups = [ "networkmanager" "video" "wheel" ]; # Enable ‘sudo’ for the user.
             shell = pkgs.zsh;
             packages = with pkgs; [
               wget
@@ -43,9 +44,9 @@ in {
             ];
           };
         }
-        else {}
+        else { }
       )
 
-      {machines.shared.enable = true;}
+      { machines.shared.enable = true; }
     ]);
 }

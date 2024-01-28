@@ -1,31 +1,31 @@
-{
-  config,
-  lib,
-  pkgs,
-  system,
-  username,
-  ...
+{ config
+, lib
+, pkgs
+, system
+, username
+, ...
 }:
 with lib; let
   cfg = config.services'.ssh;
-in {
+in
+{
   options.services'.ssh = {
     enable = mkEnableOption "ssh services";
 
     matchBlocks = mkOption {
       type = types.nullOr types.attrs;
-      default = {};
+      default = { };
     };
   };
 
   config = mkIf cfg.enable (mkMerge [
     (
-      if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
+      if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
       then {
-        networking.firewall.allowedTCPPorts = [22];
+        networking.firewall.allowedTCPPorts = [ 22 ];
         services.openssh.enable = true;
       }
-      else {}
+      else { }
     )
 
     {

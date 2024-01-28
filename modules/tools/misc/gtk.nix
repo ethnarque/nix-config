@@ -1,13 +1,13 @@
-{
-  config,
-  lib,
-  pkgs,
-  username,
-  ...
+{ config
+, lib
+, pkgs
+, username
+, ...
 }:
 with lib; let
   cfg = config.appearance.gtk;
-in {
+in
+{
   options.appearance.gtk = {
     enable = mkEnableOption "tmux cli";
 

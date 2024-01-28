@@ -1,14 +1,14 @@
-{
-  config,
-  lib,
-  pkgs,
-  system,
-  username,
-  ...
+{ config
+, lib
+, pkgs
+, system
+, username
+, ...
 }:
 with lib; let
   cfg = config.services'.samba;
-in {
+in
+{
   options.services'.samba = {
     enable = mkEnableOption "samba";
 
@@ -23,13 +23,13 @@ in {
 
     shares = mkOption {
       type = types.attrs;
-      default = {};
+      default = { };
     };
   };
 
   config = mkIf cfg.enable (mkMerge [
     (
-      if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
+      if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
       then {
         networking.firewall.allowedTCPPorts = [
           137 # Samba: NETBIOS Name Service
@@ -84,7 +84,7 @@ in {
           ];
         };
       }
-      else {}
+      else { }
     )
   ]);
 }

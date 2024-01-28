@@ -1,20 +1,20 @@
-{
-  config,
-  lib,
-  pkgs,
-  system,
-  username,
-  ...
+{ config
+, lib
+, pkgs
+, system
+, username
+, ...
 }:
 with lib; let
   cfg = config.apps.zsh;
-in {
+in
+{
   options.apps.zsh = {
     enable = mkEnableOption "zsh shell";
 
     plugins = mkOption {
       type = with types; listOf attrs;
-      default = [];
+      default = [ ];
     };
   };
 
@@ -35,7 +35,7 @@ in {
       };
     }
     {
-      home-manager.users.${username} = {config, ...}: {
+      home-manager.users.${username} = { config, ... }: {
         home.packages = with pkgs; [
           zsh-history-substring-search # the option does not work for me, needed to load it manually
         ];

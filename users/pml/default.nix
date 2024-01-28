@@ -1,12 +1,13 @@
+{ config
+, lib
+, pkgs
+, username
+, ...
+}:
+let
+  modules = import ../../modules { inherit lib; };
+in
 {
-  config,
-  lib,
-  pkgs,
-  username,
-  ...
-}: let
-  modules = import ../../modules {inherit lib;};
-in {
   imports = modules;
 
   home-manager.users."${username}" = {

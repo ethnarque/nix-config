@@ -1,21 +1,21 @@
-{
-  config,
-  lib,
-  pkgs,
-  system,
-  username,
-  ...
+{ config
+, lib
+, pkgs
+, system
+, username
+, ...
 }:
 with lib; let
   cfg = config.machines.hardware.sound;
-in {
+in
+{
   options.machines.hardware.sound = {
     enable = mkEnableOption "hardware sound";
   };
 
   config = mkIf cfg.enable (mkMerge [
     (
-      if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
+      if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
       then {
         sound.enable = true;
 
@@ -25,7 +25,7 @@ in {
           pulse.enable = true;
         };
       }
-      else {}
+      else { }
     )
   ]);
 }

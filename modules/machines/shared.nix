@@ -30,5 +30,12 @@ in
       }
     else
       { })
+    {
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.users.${username} = {
+        home.stateVersion = "23.11";
+      };
+    }
   ]);
 }

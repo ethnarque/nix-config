@@ -1,20 +1,21 @@
-{
-  config,
-  lib,
-  pkgs,
-  system,
-  username,
-  ...
-}: let
+{ config
+, lib
+, pkgs
+, system
+, username
+, ...
+}:
+let
   cfg = config.compositors.gnome;
-in {
+in
+{
   options.compositors.gnome = {
     enable = lib.mkEnableOption "sway wm";
   };
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
     (
-      if !(builtins.elem system ["aarch64-darwin" "x86_64-darwin"])
+      if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
       then {
         compositors.minimal.enable = true;
         compositors.interface.enable = true;
@@ -97,9 +98,9 @@ in {
         home-manager.users.${username} = with lib.hm.gvariant; {
           dconf.settings = {
             "org/gnome/desktop/input-sources" = {
-              mru-sources = [(mkTuple ["xkb" "us"])];
+              mru-sources = [ (mkTuple [ "xkb" "us" ]) ];
               show-all-sources = false;
-              sources = [(mkTuple ["xkb" "us+altgr-intl"]) (mkTuple ["xkb" "ru"])];
+              sources = [ (mkTuple [ "xkb" "us+altgr-intl" ]) (mkTuple [ "xkb" "ru" ]) ];
               xkb-options = [
                 "terminate:ctrl_alt_bksp"
                 "caps:ctrl_modifier"
@@ -120,16 +121,16 @@ in {
             };
 
             "org/gnome/desktop/wm/keybindings" = {
-              move-to-workspace-1 = ["<Shift><Super>1"];
-              move-to-workspace-2 = ["<Shift><Super>2"];
-              move-to-workspace-3 = ["<Shift><Super>3"];
-              move-to-workspace-4 = ["<Shift><Super>4"];
-              move-to-workspace-5 = ["<Shift><Super>5"];
-              switch-to-workspace-1 = ["<Super>1"];
-              switch-to-workspace-2 = ["<Super>2"];
-              switch-to-workspace-3 = ["<Super>3"];
-              switch-to-workspace-4 = ["<Super>4"];
-              switch-to-workspace-5 = ["<Super>5"];
+              move-to-workspace-1 = [ "<Shift><Super>1" ];
+              move-to-workspace-2 = [ "<Shift><Super>2" ];
+              move-to-workspace-3 = [ "<Shift><Super>3" ];
+              move-to-workspace-4 = [ "<Shift><Super>4" ];
+              move-to-workspace-5 = [ "<Shift><Super>5" ];
+              switch-to-workspace-1 = [ "<Super>1" ];
+              switch-to-workspace-2 = [ "<Super>2" ];
+              switch-to-workspace-3 = [ "<Super>3" ];
+              switch-to-workspace-4 = [ "<Super>4" ];
+              switch-to-workspace-5 = [ "<Super>5" ];
             };
 
             "org/gnome/desktop/wm/preferences" = {
@@ -189,7 +190,7 @@ in {
                 "clipboard-indicator@tudmotu.com"
                 "dash-to-dock@micxgx.gmail.com"
               ];
-              favorite-apps = ["org.gnome.Nautilus.desktop" "org.gnome.Calendar.desktop" "firefox.desktop"];
+              favorite-apps = [ "org.gnome.Nautilus.desktop" "org.gnome.Calendar.desktop" "firefox.desktop" ];
             };
 
             "org/gnome/shell/extensions/clipboard-indicator" = {
@@ -200,7 +201,7 @@ in {
               move-item-first = true;
               notify-on-copy = false;
               strip-text = true;
-              toggle-menu = ["Favorites"];
+              toggle-menu = [ "Favorites" ];
             };
 
             "org/gnome/shell/extensions/dash-to-dock" = {
@@ -226,11 +227,11 @@ in {
             };
 
             "org/gnome/shell/keybindings" = {
-              switch-to-application-1 = [];
-              switch-to-application-2 = [];
-              switch-to-application-3 = [];
-              switch-to-application-4 = [];
-              switch-to-application-5 = [];
+              switch-to-application-1 = [ ];
+              switch-to-application-2 = [ ];
+              switch-to-application-3 = [ ];
+              switch-to-application-4 = [ ];
+              switch-to-application-5 = [ ];
             };
 
             "org/gnome/tweaks" = {
@@ -239,7 +240,7 @@ in {
           };
         };
       }
-      else {}
+      else { }
     )
   ]);
 }

@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   boot = {
     initrd.luks.devices = {
       root = {
@@ -10,13 +10,13 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    supportedFilesystems = ["btrfs"];
+    supportedFilesystems = [ "btrfs" ];
   };
 
   console = {
     earlySetup = true;
     font = "${pkgs.terminus_font}/share/consolefonts/ter-132n.psf.gz";
-    packages = with pkgs; [terminus_font];
+    packages = with pkgs; [ terminus_font ];
     keyMap = "us";
   };
 
