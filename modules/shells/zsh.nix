@@ -1,19 +1,35 @@
 { config, lib, pkgs, system, username, ... }:
-with lib;
-
 let
+  inherit (lib)
+    mkAfter
+    mkBefore
+    mkIf
+    mkEnableOption
+    mkMerge
+    mkOption
+    types;
+
   cfg = config.apps.zsh;
 in
 {
   options.apps.zsh = {
     enable = mkEnableOption "zsh shell";
 
+    initExtra = mkOption {
+      type = types.str;
+      default = "";
+    };
+
+    initExtraBeforeCompInit = mkOption {
+      type = types.str;
+      default = "";
+    };
+
     plugins = mkOption {
       type = with types; listOf attrs;
       default = [ ];
     };
   };
-
 
   config = mkIf cfg.enable (mkMerge [
     (if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ]) then
@@ -33,25 +49,18 @@ in
       }
     )
     {
+      environment.systemPackages = with pkgs; [
+        zsh-history-substring-search # the option does not work for me, needed to load it manually
+      ];
+
       programs.zsh = {
         enable = true;
         enableGlobalCompInit = false; # Already using compinit with home-manager since zsh is managed by it
         promptInit = "";
-        interactiveShellInit = ''
-          autoload -Uz compinit
-          if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
-            compinit
-          else
-            compinit -C
-          fi
-        '';
+        interactiveShellInit = "";
       };
 
       home-manager.users.${username} = { config, ... }: {
-        home.packages = with pkgs; [
-          zsh-history-substring-search # the option does not work for me, needed to load it manually
-        ];
-
         programs.direnv.enable = true;
 
         programs.zsh = {
@@ -59,27 +68,55 @@ in
           autocd = false;
           enableCompletion = false;
           defaultKeymap = "viins";
+
           dirHashes = {
             code = "$HOME/Documents/Code";
             dl = "$HOME/Downloads";
             docs = "$HOME/Documents";
             pics = "$HOME/Pictures";
           };
+
           dotDir = ".config/zsh";
+
           history = {
             expireDuplicatesFirst = true;
             ignoreAllDups = true;
             path = "${config.xdg.dataHome}/zsh/zsh_history";
           };
-          initExtraBeforeCompInit = ''
-            TYPEWRITTEN_PROMPT_LAYOUT="pure_verbose"
 
-            source ${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh
-            bindkey '^[OA' history-substring-search-up
-            bindkey '^[[A' history-substring-search-up
-            bindkey '^[OB' history-substring-search-down
-            bindkey '^[[B' history-substring-search-down
+          initExtra = mkMerge [
+            (mkBefore (
+              ''
+                source ${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+                bindkey '^[OA' history-substring-search-up
+                bindkey '^[[A' history-substring-search-up
+                bindkey '^[OB' history-substring-search-down
+                bindkey '^[[B' history-substring-search-down
+              ''
+            ))
+            (mkAfter cfg.initExtra)
+          ];
+
+          initExtraBeforeCompInit = mkMerge [
+            (mkBefore (cfg.initExtraBeforeCompInit))
+            (mkAfter (
+              ''
+                autoload -Uz compinit
+                if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(N.mh+24) ]]; then
+                    compinit
+                else
+                    compinit -C
+                fi
+              ''
+            ))
+          ];
+
+          loginExtra = ''
+            ls() {
+                ${pkgs.coreutils}/bin/ls --color=auto "$@"
+            }
           '';
+
           plugins =
             cfg.plugins
             ++ [
@@ -103,6 +140,19 @@ in
                 };
               }
             ];
+
+          sessionVariables = {
+            TYPEWRITTEN_PROMPT_LAYOUT = "pure_verbose";
+          };
+
+          shellAliases = {
+            ll = "ls -la";
+            ".." = "cd ..";
+          };
+
+          shellGlobalAliases = {
+            G = "| grep";
+          };
         };
       };
     }
