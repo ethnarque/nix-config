@@ -5,6 +5,20 @@
 
   machines.darwin.enable = true;
 
+  compositors.interface.enable = true;
+  compositors.interface = {
+    fonts = {
+      packages = with pkgs; [
+        iosevka
+        (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
+      ];
+      monospace = {
+        name = "Iosevka";
+        size = 14.0;
+      };
+    };
+  };
+
   programs.gnupg.agent.enable = true;
 
   environment.systemPackages = with pkgs;[
@@ -41,8 +55,6 @@
     casks = [
       "affinity-photo"
       "discord"
-      "font-iosevka"
-      "font-symbols-only-nerd-font"
       "radio-silence"
       "transmission"
     ];

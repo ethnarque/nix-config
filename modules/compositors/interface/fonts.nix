@@ -1,12 +1,9 @@
-{ config
-, lib
-, options
-, pkgs
-, system
-, username
-, ...
-}:
-with lib; let
+{ config, lib, options, pkgs, system, username, ... }:
+let
+  inherit (lib)
+    mkOption
+    types;
+
   cfg = config.compositors.interface.fonts;
 in
 {
@@ -54,12 +51,12 @@ in
   };
 
   config = lib.mkIf config.compositors.interface.enable (lib.mkMerge [
+    { fonts.fontDir.enable = true; }
     (
       if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
       then {
         fonts = {
           fontconfig.enable = true;
-          fontDir.enable = true;
           packages = cfg.packages ++ [ ];
         };
 

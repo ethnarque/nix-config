@@ -1,12 +1,12 @@
-{ config
-, lib
-, options
-, pkgs
-, system
-, username
-, ...
-}:
-with lib; let
+{ config, lib, options, pkgs, system, username, ... }:
+let
+  inherit (lib)
+    mkIf
+    mkEnableOption
+    mkMerge
+    mkOption
+    types;
+
   cfg = config.compositors.interface;
 in
 {
