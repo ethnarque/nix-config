@@ -1,11 +1,7 @@
-{ config
-, lib
-, pkgs
-, system
-, username
-, ...
-}:
-with lib; let
+{ config, lib, pkgs, system, username, ... }:
+with lib;
+
+let
   cfg = config.apps.zsh;
 in
 {
@@ -18,7 +14,17 @@ in
     };
   };
 
+
   config = mkIf cfg.enable (mkMerge [
+    (if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ]) then
+      { }
+    else
+      {
+        environment.systemPackages = [
+          pkgs.darwin-zsh-completions
+        ];
+      }
+    )
     {
       programs.zsh = {
         enable = true;
@@ -33,8 +39,7 @@ in
           fi
         '';
       };
-    }
-    {
+
       home-manager.users.${username} = { config, ... }: {
         home.packages = with pkgs; [
           zsh-history-substring-search # the option does not work for me, needed to load it manually

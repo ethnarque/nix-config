@@ -18,20 +18,24 @@
     let
       systems = [ "x86_64-linux" "i686-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
 
+      mkPkgs = system: import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [
+          (final: prev: {
+            darwin-zsh-completions = prev.callPackage ./packages/dark-mode-notify.nix { };
+          })
+        ];
+      };
+
       forAllSystems = function:
-        (nixpkgs.lib.genAttrs systems (
-          system:
-          function (
+        (nixpkgs.lib.genAttrs systems
+          (system: function (
             let
-              pkgs = import nixpkgs {
-                inherit system;
-                config.allowUnfree = true;
-                overlays = [ ];
-              };
+              pkgs = mkPkgs system;
             in
             { inherit pkgs system; }
-          )
-        ));
+          )));
 
 
       mkSystem = system: username: fn: fn
@@ -39,16 +43,15 @@
           inherit username system;
 
           lib = nixpkgs.lib.extend (final: prev: { } // home-manager.lib);
-
+          pkgs = mkPkgs system;
           modules = import ./modules { inherit lib; };
         });
     in
     {
-
       nixosConfigurations.evgeniya = mkSystem "x86_64-linux" "pml"
-        ({ lib, modules, system, username }: nixpkgs.lib.nixosSystem {
+        ({ lib, modules, pkgs, system, username }: nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit inputs lib system username; };
+          specialArgs = { inherit inputs lib pkgs system username; };
           modules = lib.flatten [
             modules
             (import ./machines/evgeniya)
@@ -67,9 +70,9 @@
         };
 
       darwinConfigurations.magda = mkSystem "aarch64-darwin" "pml"
-        ({ lib, modules, system, username, ... }: darwin.lib.darwinSystem {
+        ({ lib, modules, pkgs, system, username, ... }: darwin.lib.darwinSystem {
           inherit system;
-          specialArgs = { inherit inputs lib system username; };
+          specialArgs = { inherit inputs lib pkgs system username; };
           modules = lib.flatten [
             modules
             home-manager.darwinModules.home-manager
