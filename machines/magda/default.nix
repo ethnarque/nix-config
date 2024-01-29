@@ -1,4 +1,8 @@
 { inputs, pkgs, username, ... }: {
+  imports = [
+    inputs.home-manager.darwinModules.home-manager
+  ];
+
   machines.darwin.enable = true;
 
   programs.gnupg.agent.enable = true;

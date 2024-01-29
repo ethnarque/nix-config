@@ -20,6 +20,13 @@ in
       { }
     else
       {
+        nixpkgs.overlays = [
+          (final: prev:
+            {
+              darwin-zsh-completions = pkgs.callPackage ../../packages/darwin-zsh-completions.nix { };
+            })
+        ];
+
         environment.systemPackages = [
           pkgs.darwin-zsh-completions
         ];
