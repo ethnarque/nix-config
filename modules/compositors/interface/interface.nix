@@ -24,7 +24,7 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable (lib.mkMerge [
+  config = lib.mkMerge [
     (
       if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
       then {
@@ -68,7 +68,49 @@ in
           };
         };
       }
-      else { }
+      else {
+        nixpkgs.overlays = [
+          (final: prev:
+            {
+              dark-mode-notify = pkgs.callPackage ../../../packages/dark-mode-notify.nix { };
+            })
+        ];
+
+        environment.systemPackages = [
+          pkgs.dark-mode-notify
+        ];
+
+        launchd.user.agents."ke.ethnarque.dark-mode-notify" = {
+          serviceConfig = {
+            Label = "ke.ethnarque.dark-mode-notify";
+            KeepAlive = true;
+            StandardErrorPath = "/tmp/dark-mode-notify-stderr.log";
+            StandardOutPath = "/tmp/dark-mode-notify-stdout.log";
+            ProgramArguments =
+              let
+                mkScript = name: darkModeScript: lightModeScript: pkgs.writeScriptBin "${toString name}" ''
+                  #!${pkgs.stdenv.shell}
+                  if [[ $(defaults read -g AppleInterfaceStyle 2>/dev/null) ]]; then
+                      ${darkModeScript}
+                  else
+                      ${lightModeScript}
+                  fi
+                '';
+
+                apps = lib.zipAttrs [
+                  config.compositors.interface.darkModeScripts
+                  config.compositors.interface.lightModeScripts
+                ];
+
+                scripts = lib.collect lib.isString
+                  (lib.mapAttrs (n: v: "${mkScript n (builtins.elemAt v 0) (builtins.elemAt v 1)}/bin/${n}") apps);
+              in
+              [
+                (lib.mkBefore "${pkgs.dark-mode-notify}/bin/dark-mode-notify")
+              ] ++ scripts;
+          };
+        };
+      }
     )
-  ]);
+  ];
 }

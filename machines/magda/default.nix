@@ -5,7 +5,6 @@
 
   machines.darwin.enable = true;
 
-  compositors.interface.enable = true;
   compositors.interface = {
     fonts = {
       packages = with pkgs; [

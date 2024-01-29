@@ -1,11 +1,4 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, swift
-, swiftpm
-, swiftPackages
-, darwin
-}:
+{ lib, stdenv, fetchFromGitHub, swift, swiftpm, swiftPackages, darwin }:
 stdenv.mkDerivation {
   name = "dark-mode-notify";
   version = "0.1";
