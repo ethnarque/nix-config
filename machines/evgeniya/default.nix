@@ -101,6 +101,8 @@ in
 
     gh.enable = true;
 
+    gnupg.enable = true;
+
     kitty.enable = true;
 
     mpv = {
@@ -117,11 +119,6 @@ in
     tmux.enable = true;
 
     zsh.enable = true;
-  };
-
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
   };
 
   services' = {

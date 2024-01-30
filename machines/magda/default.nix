@@ -21,12 +21,6 @@
     };
   };
 
-  programs.gnupg.agent.enable = true;
-
-  environment.systemPackages = with pkgs;[
-    gnupg
-  ];
-
   apps = {
     git = {
       enable = true;
@@ -36,8 +30,9 @@
           name = "pml";
         };
       };
-
     };
+
+    gnupg.enable = true;
 
     kitty = {
       enable = true;
