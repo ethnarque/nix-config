@@ -18,7 +18,7 @@ in
       if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
       then {
         compositors.minimal.enable = true;
-        compositors.appereance.enable = true;
+        compositors.appearance.enable = true;
 
         # GNOME
         hardware.pulseaudio.enable = false;
