@@ -5,12 +5,15 @@
 
   machines.darwin.enable = true;
 
+  compositors.darwin.aqua.enable = true;
   compositors.appearance = {
+
     fonts = {
       packages = with pkgs; [
         iosevka
         (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
       ];
+
       monospace = {
         name = "Iosevka";
         size = 14.0;
