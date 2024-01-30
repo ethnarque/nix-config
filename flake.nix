@@ -44,7 +44,6 @@
         });
     in
     {
-
       nixosConfigurations.evgeniya = mkSystem "x86_64-linux" "pml"
         ({ lib, modules, system, username }: nixpkgs.lib.nixosSystem {
           inherit system;

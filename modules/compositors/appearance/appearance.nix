@@ -12,10 +12,10 @@ let
     mkOption
     types;
 
-  cfg = config.compositors.interface;
+  cfg = config.compositors.appearance;
 in
 {
-  options.compositors.interface = {
+  options.compositors.appearance = {
     enable = mkEnableOption ''
       interface capabilities for Wayland, X11 compositors for Linux and aqua for Darwin
     '';
@@ -83,8 +83,8 @@ in
                 '';
 
                 apps = lib.zipAttrs [
-                  config.compositors.interface.darkModeScripts
-                  config.compositors.interface.lightModeScripts
+                  config.compositors.appearance.darkModeScripts
+                  config.compositors.appearance.lightModeScripts
                 ];
 
                 scripts = flatten [

@@ -5,7 +5,7 @@
 
   machines.darwin.enable = true;
 
-  compositors.interface = {
+  compositors.appearance = {
     fonts = {
       packages = with pkgs; [
         iosevka

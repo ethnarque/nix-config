@@ -5,8 +5,8 @@ let
     concatStringsSep
     mapAttrs
     mapAttrsRecursive;
-
 in
+
 rec {
   getDir = dir:
     mapAttrs

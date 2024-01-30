@@ -18,7 +18,7 @@ in
     ];
 
     home-manager.users.${username} = with lib.hm.gvariant; let
-      fonts = config.compositors.interface.fonts;
+      fonts = config.compositors.appearance.fonts;
     in
     { config, ... }: {
       dconf.settings."com/raggesilver/BlackBox" = {

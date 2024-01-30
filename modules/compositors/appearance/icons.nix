@@ -7,23 +7,18 @@
 , ...
 }:
 with lib; let
-  cfg = config.compositors.interface.cursor;
+  cfg = config.compositors.appearance.icons;
 in
 {
-  options.compositors.interface.cursor = {
+  options.compositors.appearance.icons = {
     package = mkOption {
       type = types.package;
-      default = pkgs.gnome.adwaita-icon-theme;
+      default = pkgs.morewaita-icon-theme;
     };
 
     name = mkOption {
       type = with types; nullOr str;
-      default = "Adwaita";
-    };
-
-    size = mkOption {
-      type = types.int;
-      default = 24;
+      default = "MoreWaita";
     };
 
     darkTheme = mkOption {
@@ -37,18 +32,19 @@ in
     };
   };
 
-  config = mkIf config.compositors.interface.enable (mkMerge [
+  config = mkIf config.compositors.appearance.enable (mkMerge [
     (
       if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
       then {
+        environment.systemPackages = with pkgs; [
+          gnome.adwaita-icon-theme # MoreWaita extends from Adwaita icons
+        ];
         home-manager.users.${username} = {
-          home.pointerCursor = {
-            name = cfg.name;
-            package = cfg.package;
-            size = cfg.size;
-            x11 = {
-              enable = true;
-              defaultCursor = cfg.name;
+          gtk = {
+            enable = true;
+            iconTheme = {
+              package = cfg.package;
+              name = cfg.name;
             };
           };
         };

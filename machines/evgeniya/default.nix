@@ -31,7 +31,7 @@ in
 
   compositors.gnome.enable = true;
 
-  compositors.interface = {
+  compositors.appearance = {
     fonts = {
       packages = with pkgs; [
         apple-fonts

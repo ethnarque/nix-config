@@ -4,10 +4,10 @@ let
     mkOption
     types;
 
-  cfg = config.compositors.interface.fonts;
+  cfg = config.compositors.appearance.fonts;
 in
 {
-  options.compositors.interface.fonts = {
+  options.compositors.appearance.fonts = {
     packages = mkOption {
       type = with types; listOf package;
       default = with pkgs; [ ];
@@ -50,7 +50,7 @@ in
     };
   };
 
-  config = lib.mkIf config.compositors.interface.enable (lib.mkMerge [
+  config = lib.mkIf config.compositors.appearance.enable (lib.mkMerge [
     { fonts.fontDir.enable = true; }
     (
       if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])

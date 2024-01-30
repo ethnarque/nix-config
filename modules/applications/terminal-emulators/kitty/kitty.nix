@@ -13,18 +13,18 @@ in
     font = {
       name = mkOption {
         type = types.str;
-        default = config.compositors.interface.fonts.monospace.name;
+        default = config.compositors.appearance.fonts.monospace.name;
       };
 
       size = mkOption {
         type = types.float;
-        default = config.compositors.interface.fonts.monospace.size;
+        default = config.compositors.appearance.fonts.monospace.size;
       };
     };
   };
 
   config = mkIf cfg.enable {
-    compositors.interface = {
+    compositors.appearance = {
       darkModeScripts = {
         kitty = ''
           ${pkgs.kitty}/bin/kitty +kitten themes --reload-in=all --config-file-name "current_theme.conf" Rosé\ Pine
