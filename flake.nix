@@ -34,7 +34,12 @@
         (rec {
           inherit username system;
 
-          lib = nixpkgs.lib.extend (final: prev: { } // home-manager.lib);
+          lib = nixpkgs.lib.extend
+            (final: prev: { }
+              // (import ./lib { lib = nixpkgs.lib; })
+              // home-manager.lib
+            );
+
           modules = import ./modules { inherit lib; };
         });
     in
