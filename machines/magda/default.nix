@@ -41,6 +41,8 @@
     zsh.enable = true;
   };
 
+  services'.tailscale.enable = true;
+
   homebrew = {
     taps = [
       "homebrew/cask-fonts"

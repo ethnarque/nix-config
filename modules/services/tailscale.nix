@@ -1,8 +1,13 @@
-{ config, lib, pkgs, username, system, ... }:
-
-with lib;
-
+{ config, lib, pkgs, system, username, ... }:
 let
+  inherit (lib)
+    isDarwin
+    isLinux
+    optionalAttrs
+    mkEnableOption
+    mkIf
+    mkMerge;
+
   cfg = config.services'.tailscale;
 in
 {
@@ -13,17 +18,14 @@ in
   };
 
   config = mkIf cfg.enable (mkMerge [
-    (if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ]) then
-      {
-        services.tailscale.enable = true;
-        networking.firewall = {
-          checkReversePath = "loose";
-          trustedInterfaces = [ "tailscale0" ];
-          allowedUDPPorts = [ config.services.tailscale.port ];
-        };
-      }
-    else
-      { }
-    )
+    { services.tailscale.enable = true; }
+
+    (optionalAttrs (isLinux system) {
+      networking.firewall = {
+        checkReversePath = "loose";
+        trustedInterfaces = [ "tailscale0" ];
+        allowedUDPPorts = [ config.services.tailscale.port ];
+      };
+    })
   ]);
 }
