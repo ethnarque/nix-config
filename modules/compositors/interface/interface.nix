@@ -1,6 +1,11 @@
 { config, lib, options, pkgs, system, username, ... }:
 let
   inherit (lib)
+    collect
+    flatten
+    isString
+    mapAttrs
+    mkBefore
     mkIf
     mkEnableOption
     mkMerge
@@ -11,8 +16,8 @@ let
 in
 {
   options.compositors.interface = {
-    enable = lib.mkEnableOption ''
-      interface capabilities for Wayland and X11 compositors
+    enable = mkEnableOption ''
+      interface capabilities for Wayland, X11 compositors for Linux and aqua for Darwin
     '';
 
     darkModeScripts = mkOption {
@@ -24,7 +29,7 @@ in
     };
   };
 
-  config = lib.mkMerge [
+  config = mkMerge [
     (
       if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
       then {
@@ -38,33 +43,17 @@ in
               usegeoclue = true;
             };
 
-            darkModeScripts =
-              {
-                gtk-theme = ''
-                  ${pkgs.dconf}/bin/dconf write \
-                      /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
-                '';
+            darkModeScripts = mkMerge [
+              { gtk-theme = '' ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'" ''; }
+              { icon-theme = '' ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/icon-theme "'Papirus-Dark'" ''; }
+              cfg.darkModeScripts
+            ];
 
-                icon-theme = ''
-                  ${pkgs.dconf}/bin/dconf write \
-                      /org/gnome/desktop/interface/icon-theme "'Papirus-Dark'"
-                '';
-              }
-              // cfg.darkModeScripts;
-
-            lightModeScripts =
-              {
-                gtk-theme = ''
-                  ${pkgs.dconf}/bin/dconf write \
-                      /org/gnome/desktop/interface/color-scheme "'prefer-light'"
-                '';
-
-                icon-theme = ''
-                  ${pkgs.dconf}/bin/dconf write \
-                      /org/gnome/desktop/interface/icon-theme "'Papirus-Light'"
-                '';
-              }
-              // cfg.lightModeScripts;
+            lightModeScripts = mkMerge [
+              { gtk-theme = '' ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/color-scheme "'prefer-light'" ''; }
+              { icon-theme = '' ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/icon-theme "'Papirus-Light'" ''; }
+              cfg.lightModeScripts
+            ];
           };
         };
       }
@@ -84,7 +73,7 @@ in
           serviceConfig = {
             Label = "ke.ethnarque.dark-mode-notify";
             KeepAlive = true;
-            StandardErrorPath = "/tmp/dark-mode-notify-stderr.log";
+            StandardErrorPath = "/tmp/dark-mode-notify-err.log";
             StandardOutPath = "/tmp/dark-mode-notify-stdout.log";
             ProgramArguments =
               let
@@ -102,12 +91,16 @@ in
                   config.compositors.interface.lightModeScripts
                 ];
 
-                scripts = lib.collect lib.isString
-                  (lib.mapAttrs (n: v: "${mkScript n (builtins.elemAt v 0) (builtins.elemAt v 1)}/bin/${n}") apps);
+                scripts = flatten [
+                  (mkBefore ("${pkgs.dark-mode-notify}/bin/dark-mode-notify"))
+
+                  (collect isString
+                    (mapAttrs
+                      (n: v: "${mkScript n (builtins.elemAt v 0) (builtins.elemAt v 1)}/bin/${n}")
+                      apps))
+                ];
               in
-              [
-                (lib.mkBefore "${pkgs.dark-mode-notify}/bin/dark-mode-notify")
-              ] ++ scripts;
+              scripts;
           };
         };
       }
