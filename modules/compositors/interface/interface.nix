@@ -65,10 +65,6 @@ in
             })
         ];
 
-        environment.systemPackages = [
-          pkgs.dark-mode-notify
-        ];
-
         launchd.user.agents."ke.ethnarque.dark-mode-notify" = {
           serviceConfig = {
             Label = "ke.ethnarque.dark-mode-notify";
