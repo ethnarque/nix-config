@@ -1,13 +1,21 @@
 { config, lib, pkgs, username, system, ... }:
 
-with lib;
-
 let
+  inherit (lib)
+    mkIf
+    mkEnableOption
+    mkMerge
+    mkOption
+    types;
+
   cfg = config.machines.linux;
 in
 {
   options.machines.linux = {
-    enable = mkEnableOption "linux system defaults";
+    enable = mkEnableOption ''
+      linux system defaults
+    '';
+
     hostName = mkOption {
       type = types.str;
     };
@@ -25,25 +33,30 @@ in
 
         networking.hostName = cfg.hostName;
         networking.firewall.enable = true;
-        # networking.networkmanager.enable = true;
-        #
-        # networking.networkmanager.wifi.backend = "iwd";
-        # networking.wireless.iwd.enable = true;
+
+        nix = {
+          package = pkgs.nixUnstable;
+          extraOptions = ''
+            experimental-features = nix-command flakes
+          '';
+          gc = {
+            automatic = true;
+            options = "--delete-older-than 30d";
+          };
+        };
+
+        nixpkgs.config.allowUnfree = true;
+
+        system.stateVersion = "23.05"; # Remember what you read about it!
 
         users.users."${username}" = {
           isNormalUser = true;
           hashedPassword = "$2b$05$HFTDaVAbnEmFAEmQhw56q.kvUst.Rq6IuG3VjQRIpDdS9kmL8zGFe";
           extraGroups = [ "networkmanager" "video" "wheel" ]; # Enable ‘sudo’ for the user.
           shell = pkgs.zsh;
-          packages = with pkgs; [
-            wget
-            mkpasswd
-          ];
         };
       }
       else { }
     )
-
-    { machines.shared.enable = true; }
   ]);
 }

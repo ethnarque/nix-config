@@ -3,12 +3,12 @@ let
   apple-fonts = pkgs.callPackage ../../packages/apple-fonts.nix { };
 in
 {
-  imports = [
+  imports = with inputs;[
     ./hardware-configuration.nix
     ./configuration.nix
-    inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t480
-    inputs.home-manager.nixosModules.home-manager
-    inputs.nur.nixosModules.nur
+    nixos-hardware.nixosModules.lenovo-thinkpad-t480
+    home-manager.nixosModules.home-manager
+    nur.nixosModules.nur
   ];
 
   environment.systemPackages = with pkgs; [

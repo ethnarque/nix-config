@@ -1,13 +1,13 @@
 { inputs, pkgs, username, ... }: {
-  imports = [
-    inputs.home-manager.darwinModules.home-manager
+  imports = with inputs;[
+    home-manager.darwinModules.home-manager
   ];
 
   machines.darwin.enable = true;
 
   compositors.darwin.aqua.enable = true;
-  compositors.appearance = {
 
+  compositors.appearance = {
     fonts = {
       packages = with pkgs; [
         iosevka
@@ -34,11 +34,7 @@
 
     gnupg.enable = true;
 
-    kitty = {
-      enable = true;
-      font.size = 14.0;
-      font.name = "Iosevka";
-    };
+    kitty.enable = true;
 
     pass.enable = true;
 

@@ -1,10 +1,12 @@
-{ config
-, lib
-, pkgs
-, username
-, ...
-}:
-with lib; let
+{ config, lib, pkgs, username, ... }:
+let
+  inherit (lib)
+    mkIf
+    mkEnableOption
+    mkMerge
+    mkOption
+    types;
+
   cfg = config.apps.kitty;
 in
 {
