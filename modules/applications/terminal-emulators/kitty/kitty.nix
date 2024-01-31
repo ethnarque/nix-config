@@ -12,6 +12,7 @@ in
 {
   options.apps.kitty = {
     enable = mkEnableOption "kitty terminal";
+
     font = {
       name = mkOption {
         type = types.str;
@@ -38,8 +39,8 @@ in
         '';
       };
     };
+
     home-manager.users.${username} = { config, ... }: {
-      # Themes
       home.file = {
         kitty-themes = {
           source = ./themes;

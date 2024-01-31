@@ -1,11 +1,10 @@
-{ config
-, lib
-, pkgs
-, system
-, username
-, ...
-}:
-with lib; let
+{ config, lib, pkgs, system, username, ... }:
+let
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkMerge;
+
   cfg = config.apps.pass;
 in
 {
@@ -14,11 +13,6 @@ in
   };
 
   config = mkIf cfg.enable (mkMerge [
-    (
-      if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
-      then { }
-      else { }
-    )
     {
       home-manager.users.${username} = {
         programs.password-store = {

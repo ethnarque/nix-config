@@ -1,12 +1,15 @@
-{ config
-, inputs
-, lib
-, options
-, pkgs
-, username
-, ...
-}:
-with lib; let
+{ config, inputs, lib, options, pkgs, username, system, ... }:
+let
+  inherit (lib)
+    isLinux
+    optionalAttrs
+    mkAfter
+    mkEnableOption
+    mkIf
+    mkMerge
+    mkOption
+    types;
+
   cfg = config.apps.firefox;
 
   defaultSettings = {
@@ -34,7 +37,7 @@ in
 
     bookmarks = mkOption {
       type = with types; listOf attrs;
-      default = { };
+      default = [ ];
     };
 
     extensions = mkOption {
@@ -53,16 +56,19 @@ in
       programs.firefox = {
         enable = true;
 
-        package = pkgs.firefox.override {
-          nativeMessagingHosts = [
-            (optionalAttrs (config.compositors.gnome.enable) [
-              pkgs.gnome-browser-connector
-            ])
-            (optionalAttrs (config.apps.pass.enable) [
-              pkgs.passff-host
-            ])
-          ];
-        };
+        package =
+          if (isLinux system) then
+            pkgs.firefox.override
+              {
+                nativeMessagingHosts = [
+                  (optionalAttrs (config.compositors.gnome.enable && isLinux (system)) [
+                    pkgs.gnome-browser-connector
+                  ])
+                  (optionalAttrs (config.apps.pass.enable) [
+                    pkgs.passff-host
+                  ])
+                ];
+              } else pkgs.callPackage ../../../../packages/firefox.nix { };
 
         policies = {
           EnableTrackingProtection = true;

@@ -1,6 +1,9 @@
-{ inputs, pkgs, username, ... }: {
+{ inputs, pkgs, username, ... }:
+
+{
   imports = with inputs;[
     home-manager.darwinModules.home-manager
+    nur.nixosModules.nur
   ];
 
   machines.darwin.enable = true;
@@ -21,25 +24,26 @@
     };
   };
 
-  apps = {
-    git = {
-      enable = true;
-      extraConfig = {
-        user = {
-          email = "42704376+pmlogist@users.noreply.github.com";
-          name = "pml";
-        };
+
+  apps.firefox = {
+    enable = true;
+  };
+
+  apps.git = {
+    enable = true;
+    extraConfig = {
+      user = {
+        email = "42704376+pmlogist@users.noreply.github.com";
+        name = "pml";
       };
     };
-
-    gnupg.enable = true;
-
-    kitty.enable = true;
-
-    pass.enable = true;
-
-    zsh.enable = true;
   };
+
+  apps.gnupg.enable = true;
+  apps.kitty.enable = true;
+  apps.obinskit.enable = true;
+  apps.pass.enable = true;
+  apps.zsh.enable = true;
 
   services'.tailscale.enable = true;
 

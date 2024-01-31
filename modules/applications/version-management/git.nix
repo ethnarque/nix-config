@@ -1,6 +1,12 @@
 { config, lib, pkgs, username, ... }:
-with lib;
 let
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    mkMerge
+    types;
+
   cfg = config.apps.git;
 
   # pulled from GitHub
@@ -23,25 +29,30 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    home-manager.users.${username} = {
-      programs.git = {
-        enable = true;
-        delta.enable = true;
-        extraConfig = cfg.extraConfig // {
-          core = {
-            editor = "nvim";
-          };
-          init = {
-            defaultBranch = "main";
-          };
-          url = {
-            "git@github.com:" = {
-              insteadOf = "https://github.com/";
+  config = mkIf cfg.enable (mkMerge [
+    {
+      home-manager.users.${username} = {
+        programs.git = {
+          enable = true;
+
+          delta.enable = true;
+
+          extraConfig = cfg.extraConfig // {
+            core = {
+              editor = "nvim";
+            };
+            init = {
+              defaultBranch = "main";
+            };
+            url = {
+              "git@github.com:" = {
+                insteadOf = "https://github.com/";
+              };
             };
           };
         };
       };
-    };
-  };
+    }
+  ]);
+
 }

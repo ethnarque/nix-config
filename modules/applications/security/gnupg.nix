@@ -1,6 +1,8 @@
 { config, lib, pkgs, system, username, ... }:
 let
   inherit (lib)
+    isDarwin
+    optionalAttrs
     mkEnableOption
     mkIf
     mkMerge
@@ -26,14 +28,11 @@ in
         enableSSHSupport = cfg.enableSSHSupport;
       };
     }
-    (
-      if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
-      then { }
-      else {
-        environment.systemPackages = with pkgs;[
-          gnupg
-        ];
-      }
-    )
+
+    (optionalAttrs (isDarwin system) {
+      environment.systemPackages = with pkgs;[
+        gnupg
+      ];
+    })
   ]);
 }
