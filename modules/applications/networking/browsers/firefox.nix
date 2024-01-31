@@ -82,6 +82,8 @@ in
           isDefault = true;
           name = username;
 
+          search.force = true;
+
           bookmarks =
             [
               {
@@ -112,6 +114,8 @@ in
         profiles."downloader" = {
           id = 1;
           name = "downloader";
+
+          search.force = true;
 
           extensions = with config.nur.repos.rycee.firefox-addons;
             [
