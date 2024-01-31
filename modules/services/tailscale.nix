@@ -9,18 +9,49 @@ let
     mkMerge;
 
   cfg = config.services'.tailscale;
+
+  tailscale-darwin = pkgs.stdenv.mkDerivation rec {
+    pname = "Tailscale";
+    version = "1.58.2";
+    nativeBuildInputs = [ pkgs.unzip ];
+    sourceRoot = ".";
+
+    installPhase = ''
+      mkdir -p "$out/Applications"
+      cp -r Tailscale.app "$out/Applications/Tailscale.app"
+    '';
+
+    src = pkgs.fetchurl {
+      name = "Tailscale-${version}-macos.zip";
+      url = "https://pkgs.tailscale.com/stable/Tailscale-${version}-macos.zip";
+      sha256 = "zdS4gp1OzWgRhdPrW4D1Xr5BZnKicUIF7DSXkVNV2rY=";
+
+    };
+  };
 in
 {
   options.services'.tailscale = {
     enable = mkEnableOption ''
       tailscale
     '';
+
   };
 
   config = mkIf cfg.enable (mkMerge [
-    { services.tailscale.enable = true; }
+    (optionalAttrs (isDarwin system) {
+      home-manager.users.${username} = {
+        home.packages = [
+          tailscale-darwin
+        ];
+
+        #programs.zsh.shellAliases = {
+        #  tailscale = "${pkgs.tailscale-darwin}";
+        #};
+      };
+    })
 
     (optionalAttrs (isLinux system) {
+      services.tailscale.enable = true;
       networking.firewall = {
         checkReversePath = "loose";
         trustedInterfaces = [ "tailscale0" ];
