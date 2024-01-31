@@ -25,7 +25,6 @@ let
       name = "Tailscale-${version}-macos.zip";
       url = "https://pkgs.tailscale.com/stable/Tailscale-${version}-macos.zip";
       sha256 = "zdS4gp1OzWgRhdPrW4D1Xr5BZnKicUIF7DSXkVNV2rY=";
-
     };
   };
 in

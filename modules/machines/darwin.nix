@@ -1,6 +1,8 @@
 { config, lib, pkgs, system, username, ... }:
 let
   inherit (lib)
+    isDarwin
+    optionalAttrs
     mkEnableOption
     mkIf
     mkMerge;
@@ -13,10 +15,7 @@ in
   };
 
   config = mkIf cfg.enable (mkMerge [
-    (if (!builtins.elem system [ "aarch64-darwin" "x86-64-darwin" ])
-    then
-      { }
-    else {
+    (optionalAttrs (isDarwin system) {
       homebrew.enable = true;
 
       nix.gc.interval = { Weekday = 0; Hour = 0; Minute = 0; };
@@ -34,7 +33,6 @@ in
       security.pam.enableSudoTouchIdAuth = true;
 
       system.stateVersion = 4;
-
     })
   ]);
 }
