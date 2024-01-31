@@ -1,6 +1,7 @@
 { config, inputs, lib, options, pkgs, username, system, ... }:
 let
   inherit (lib)
+    isDarwin
     isLinux
     optionalAttrs
     mkAfter
@@ -51,82 +52,107 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    home-manager.users.${username} = {
-      programs.firefox = {
-        enable = true;
+  config = mkIf cfg.enable (mkMerge [
+    {
+      home-manager.users.${username} = {
+        programs.firefox = {
+          enable = true;
 
-        package =
-          if (isLinux system) then
-            pkgs.firefox.override
-              {
-                nativeMessagingHosts = [
-                  (optionalAttrs (config.compositors.gnome.enable && isLinux (system)) [
-                    pkgs.gnome-browser-connector
-                  ])
-                  (optionalAttrs (config.apps.pass.enable) [
-                    pkgs.passff-host
-                  ])
-                ];
-              } else pkgs.callPackage ../../../../packages/firefox.nix { };
-
-        policies = {
-          EnableTrackingProtection = true;
-          SearchEngines = {
-            Default = "DuckDuckGo";
-          };
-        };
-
-        profiles.${username} = {
-          id = 0;
-          isDefault = true;
-          name = username;
-
-          search.force = true;
-
-          bookmarks =
-            [
-              {
-                name = "YouTube";
-                tags = [ "youtube" ];
-                keyword = "youtube";
-                url = "https://youtube.com";
-              }
-            ]
-            ++ cfg.bookmarks;
-
-          extensions = with config.nur.repos.rycee.firefox-addons;
-            [
-              bitwarden
-              ublock-origin
-              search-by-image
-              (optionalAttrs (config.apps.pass.enable) passff)
-            ]
-            ++ cfg.extensions;
-
-          search = {
-            default = "DuckDuckGo";
+          policies = {
+            EnableTrackingProtection = true;
+            SearchEngines = {
+              Default = "DuckDuckGo";
+            };
           };
 
-          settings = defaultSettings // cfg.settings;
-        };
+          profiles.${username} = {
+            id = 0;
+            isDefault = true;
+            name = username;
 
-        profiles."downloader" = {
-          id = 1;
-          name = "downloader";
+            search.force = true;
 
-          search.force = true;
+            bookmarks =
+              [
+                {
+                  name = "YouTube";
+                  tags = [ "youtube" ];
+                  keyword = "youtube";
+                  url = "https://youtube.com";
+                }
+              ]
+              ++ cfg.bookmarks;
 
-          extensions = with config.nur.repos.rycee.firefox-addons;
-            [
-              ublock-origin
-              search-by-image
-            ]
-            ++ cfg.extensions;
+            extensions = with config.nur.repos.rycee.firefox-addons;
+              [
+                bitwarden
+                ublock-origin
+                search-by-image
+                (optionalAttrs (config.apps.pass.enable) browserpass)
+              ]
+              ++ cfg.extensions;
 
-          settings = defaultSettings // mkAfter { };
+            search = {
+              default = "DuckDuckGo";
+            };
+
+            settings = defaultSettings // cfg.settings;
+          };
+
+          profiles."downloader" = {
+            id = 1;
+            name = "downloader";
+
+            search.force = true;
+
+            extensions = with config.nur.repos.rycee.firefox-addons;
+              [
+                ublock-origin
+                search-by-image
+              ]
+              ++ cfg.extensions;
+
+            settings = defaultSettings // mkAfter { };
+          };
         };
       };
-    };
-  };
+    }
+
+    (optionalAttrs (isLinux system) {
+      programs.browserpass.enable = true;
+
+      home-manager.users.${username}.programs.firefox = {
+        package = pkgs.firefox.override {
+          nativeMessagingHosts = with pkgs;[
+            (optionalAttrs (config.compositors.gnome.enable)
+              gnome-browser-connector)
+
+            (optionalAttrs (config.apps.pass.enable)
+              browserpass)
+          ];
+        };
+      };
+    })
+
+    (optionalAttrs (isDarwin system) {
+      home-manager.users.${username} = {
+        programs.firefox.package = pkgs.callPackage ../../../../packages/firefox.nix { };
+
+        # TODO: Make a function in gnupg module in order to concat strings
+        home.file.".gnupg/gpg-agent.conf".text = ''
+          pinentry-program ${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac
+        '';
+      };
+
+      # Install browserpass native to connect to the password
+      # TODO: Needs to change mannuly the password pass in the extensions settings
+      system.activationScripts.extraUserActivation.text = mkIf config.apps.pass.enable
+        ''
+          install -d -o ${username} -g staff $HOME/Library/Application\ Support/Mozilla/NativeMessagingHosts
+          ln -sf \
+             ${pkgs.browserpass}/lib/mozilla/native-messaging-hosts/com.github.browserpass.native.json \
+             $HOME/Library/Application\ Support/Mozilla/NativeMessagingHosts/com.github.browserpass.native.json
+        '';
+    })
+  ]);
 }
