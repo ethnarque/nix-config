@@ -38,14 +38,14 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     (optionalAttrs (isDarwin system) {
-      home-manager.users.${username} = {
-        home.packages = [
-          tailscale-darwin
-        ];
+      homebrew.casks = [
+        "tailscale"
+      ];
 
-        #programs.zsh.shellAliases = {
-        #  tailscale = "${pkgs.tailscale-darwin}";
-        #};
+      home-manager.users.${username} = {
+        programs.zsh.shellAliases = {
+          tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
+        };
       };
     })
 
