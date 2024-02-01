@@ -9,6 +9,7 @@ let
     mkMerge
     mkOption
     optionalAttrs
+    optionalString
     types;
 
   cfg = config.apps.zsh;
@@ -81,10 +82,21 @@ in
               ''
             ))
             (mkAfter cfg.initExtra)
+            (optionalString (isDarwin system) ''
+              if [[ $(uname -m) == 'arm64' ]]; then
+                  eval "$(/opt/homebrew/bin/brew shellenv)"
+              fi
+            ''
+            )
           ];
 
           initExtraBeforeCompInit = mkMerge [
             (mkBefore (cfg.initExtraBeforeCompInit))
+            (optionalString (isDarwin system) ''
+              if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
+                  fpath+=/opt/homebrew/share/zsh/site-functions
+              fi
+            '')
             ''
               autoload -Uz compinit
               if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(N.mh+24) ]]; then
