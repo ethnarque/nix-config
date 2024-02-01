@@ -109,6 +109,7 @@ in
               [
                 ublock-origin
                 search-by-image
+                (optionalAttrs (config.apps.pass.enable) browserpass)
               ]
               ++ cfg.extensions;
 
@@ -145,13 +146,18 @@ in
       };
 
       # Install browserpass native to connect to the password
-      # TODO: Needs to change mannuly the password pass in the extensions settings
+      # TODO: Needs to change manually the password pass in the extensions settings
       system.activationScripts.extraUserActivation.text = mkIf config.apps.pass.enable
         ''
           install -d -o ${username} -g staff $HOME/Library/Application\ Support/Mozilla/NativeMessagingHosts
           ln -sf \
              ${pkgs.browserpass}/lib/mozilla/native-messaging-hosts/com.github.browserpass.native.json \
              $HOME/Library/Application\ Support/Mozilla/NativeMessagingHosts/com.github.browserpass.native.json
+
+          install -d -o ${username} -g staff $HOME/Library/Application\ Support/Orion/NativeMessagingHosts
+          ln -sf \
+             ${pkgs.browserpass}/lib/mozilla/native-messaging-hosts/com.github.browserpass.native.json \
+             $HOME/Library/Application\ Support/Orion/NativeMessagingHosts/com.github.browserpass.native.json
         '';
     })
   ]);

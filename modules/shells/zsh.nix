@@ -1,6 +1,7 @@
 { config, lib, pkgs, system, username, ... }:
 let
   inherit (lib)
+    concatLines
     isDarwin
     mkAfter
     mkBefore
@@ -36,8 +37,18 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     {
+      nixpkgs.overlays = [
+        (final: prev:
+          {
+            darwin-zsh-completions = pkgs.callPackage ../../packages/darwin-zsh-completions.nix { };
+          })
+      ];
+    }
+
+    {
       environment.systemPackages = with pkgs; [
         zsh-history-substring-search # the option does not work for me, needed to load it manually
+        (optionalAttrs (isDarwin system) pkgs.darwin-zsh-completions)
       ];
 
       programs.zsh = {
@@ -71,32 +82,25 @@ in
             path = "${config.xdg.dataHome}/zsh/zsh_history";
           };
 
-          initExtra = mkMerge [
-            (mkBefore (
-              ''
-                source ${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh
-                bindkey '^[OA' history-substring-search-up
-                bindkey '^[[A' history-substring-search-up
-                bindkey '^[OB' history-substring-search-down
-                bindkey '^[[B' history-substring-search-down
-              ''
-            ))
-            (mkAfter cfg.initExtra)
-            (optionalString (isDarwin system) ''
-              if [[ $(uname -m) == 'arm64' ]]; then
-                  eval "$(/opt/homebrew/bin/brew shellenv)"
-              fi
+          initExtra = concatLines [
             ''
-            )
+              source ${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+              bindkey '^[OA' history-substring-search-up
+              bindkey '^[[A' history-substring-search-up
+              bindkey '^[OB' history-substring-search-down
+              bindkey '^[[B' history-substring-search-down
+
+              ${optionalString (isDarwin system) ''
+                if [[ $(uname -m) == 'arm64' ]]; then
+                    eval "$(/opt/homebrew/bin/brew shellenv)"
+                fi
+              ''}
+
+              ${cfg.initExtra}
+            ''
           ];
 
-          initExtraBeforeCompInit = mkMerge [
-            (mkBefore (cfg.initExtraBeforeCompInit))
-            (optionalString (isDarwin system) ''
-              if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
-                  fpath+=/opt/homebrew/share/zsh/site-functions
-              fi
-            '')
+          initExtraBeforeCompInit = concatLines [
             ''
               autoload -Uz compinit
               if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(N.mh+24) ]]; then
@@ -104,16 +108,19 @@ in
               else
                   compinit -C
               fi
+
+              ${cfg.initExtraBeforeCompInit}
             ''
           ];
 
-          loginExtra = mkMerge [
-            (mkIf (isDarwin system)
-              ''
+          loginExtra = concatLines [
+            ''
+              ${(optionalString (isDarwin system) ''
                 ls() {
                     ${pkgs.coreutils}/bin/ls --color=auto "$@"
                 }
-              '')
+              '')}
+            ''
           ];
 
           plugins = [
@@ -154,19 +161,5 @@ in
         };
       };
     }
-
-    (optionalAttrs (isDarwin system) {
-      nixpkgs.overlays = [
-        (final: prev:
-          {
-            darwin-zsh-completions = pkgs.callPackage ../../packages/darwin-zsh-completions.nix { };
-          })
-      ];
-
-      environment.systemPackages = [
-        pkgs.darwin-zsh-completions
-      ];
-
-    })
   ]);
 }
