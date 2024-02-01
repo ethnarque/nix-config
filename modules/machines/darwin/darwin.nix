@@ -23,6 +23,10 @@ in
   config = mkIf cfg.enable (mkMerge [
     (optionalAttrs (isDarwin system) {
       homebrew.enable = true;
+      homebrew.casks = [
+        "mos"
+        "orion"
+      ];
 
       nix.gc.interval = { Weekday = 0; Hour = 0; Minute = 0; };
       nix.settings.trusted-users = [ "@admin" ];
