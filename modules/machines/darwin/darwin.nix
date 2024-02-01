@@ -1,4 +1,5 @@
-{ config, lib, pkgs, system, username, ... }:
+{ config, inputs, lib, pkgs, system, username, ... }:
+
 let
   inherit (lib)
     isDarwin
@@ -10,6 +11,11 @@ let
   cfg = config.machines.darwin;
 in
 {
+  imports = with inputs;[
+    home-manager.darwinModules.home-manager
+    nur.nixosModules.nur
+  ];
+
   options.machines.darwin = {
     enable = mkEnableOption "darwin systems defaults";
   };

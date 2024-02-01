@@ -1,11 +1,6 @@
-{ inputs, pkgs, username, ... }:
+{ pkgs, ... }:
 
 {
-  imports = with inputs;[
-    home-manager.darwinModules.home-manager
-    nur.nixosModules.nur
-  ];
-
   machines.darwin.enable = true;
 
   compositors.darwin.aqua.enable = true;
