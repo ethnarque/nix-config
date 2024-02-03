@@ -54,8 +54,8 @@ in
       programs.zsh = {
         enable = true;
         enableGlobalCompInit = false; # Already using compinit with home-manager since zsh is managed by it
-        promptInit = "";
-        interactiveShellInit = "";
+        # promptInit = "";
+        # interactiveShellInit = "";
       };
 
       home-manager.users.${username} = { config, ... }: {
