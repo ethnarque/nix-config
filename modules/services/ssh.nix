@@ -29,23 +29,21 @@ in
     )
 
     {
-      home-manager.users.${username} = {
-        programs.ssh = {
-          enable = true;
-          matchBlocks =
-            cfg.matchBlocks
-            // {
-              "github.com" = {
-                hostname = "github.com";
-                identityFile = "~/.ssh/id_ed25519.github";
-              };
-
-              "ethnarque.co" = {
-                hostname = "ethnarque.co";
-                identityFile = "~/.ssh/id_ed25519.hetzner";
-              };
+      hm.programs.ssh = {
+        enable = true;
+        matchBlocks =
+          cfg.matchBlocks
+          // {
+            "github.com" = {
+              hostname = "github.com";
+              identityFile = "~/.ssh/id_ed25519.github";
             };
-        };
+
+            "ethnarque.co" = {
+              hostname = "ethnarque.co";
+              identityFile = "~/.ssh/id_ed25519.hetzner";
+            };
+          };
       };
     }
   ]);

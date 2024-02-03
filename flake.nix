@@ -70,6 +70,7 @@
           inherit system;
           specialArgs = { inherit inputs lib system username; };
           modules = lib.flatten [
+            (lib.mkAliasOptionModule [ "hm" ] [ "home-manager" "users" username ])
             modules
             (import ./machines/magda)
           ];
