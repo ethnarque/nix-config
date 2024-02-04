@@ -1,11 +1,43 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
-  machines.darwin.enable = true;
+  imports = with inputs;[
+    home-manager.darwinModules.home-manager
+    nur.nixosModules.nur
+  ];
+
+  machine.darwin.enable = true;
+  machine.darwin.touchIdAuth = true;
+
+  machine.darwin.homebrew.taps = [
+    "koekeishiya/homebrew-formulae"
+    "FelixKratz/homebrew-formulae"
+  ];
+
+  machine.darwin.homebrew.brews = [
+    "koekeishiya/formulae/yabai"
+    "koekeishiya/formulae/skhd"
+    "sketchybar"
+  ];
+
+  machine.darwin.homebrew.casks = [
+    "affinity-photo"
+    "alfred"
+    "monitorcontrol"
+    "mos"
+    "radio-silence"
+    "the-unarchiver"
+  ];
+
+  machine.hardware.android.enable = true;
+
+  machine.services.ssh.enable = true;
+  machine.services.tailscale.enable = true;
+
 
   compositors.darwin.aqua.enable = true;
 
-  compositors.appearance = {
+  appearance = {
     fonts = {
       packages = with pkgs; [
         iosevka
@@ -18,12 +50,11 @@
       };
     };
   };
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  # Apps
+  apps.btop.enable = true;
 
-  apps.firefox = {
-    enable = true;
-  };
+  apps.firefox.enable = true;
 
   apps.git = {
     enable = true;
@@ -41,7 +72,6 @@
   apps.pass.enable = true;
   apps.zsh.enable = true;
 
-  services'.tailscale.enable = true;
 
   homebrew = {
     taps = [

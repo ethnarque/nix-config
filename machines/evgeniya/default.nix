@@ -12,7 +12,6 @@ in
   ];
 
   environment.systemPackages = with pkgs; [
-    android-tools
     amberol
     tagger
     foliate
@@ -23,37 +22,54 @@ in
     yt-dlp
   ];
 
-  machines.linux = {
+  machine.linux = {
     enable = true;
     hostName = "evgeniya";
-    hardware.intel.enable = true;
+    #hardware.intel.enable = true;
   };
 
-  compositors.gnome.enable = true;
+  machine.gnome.enable = true;
+
+  machine.hardware.intel.enable = true;
+  machine.hardware.sound.enable = true;
+  machine.hardware.bluetooth.enable = true;
+  machine.hardware.android.enable = true;
+
+  machine.services.avahi.enable = true;
+  machine.services.printing.enable = true;
+  machine.services.samba.enable = true;
+  machine.services.ssh.enable = true;
+  machine.services.tailscale.enable = true;
+
+  apps.valent.enable = true;
+  apps.ulauncher.enable = true;
+
+  #compositors.gnome.enable = true;
+
+  appearance.fonts = {
+    packages = with pkgs; [
+      apple-fonts
+      noto-fonts-cjk
+      noto-fonts-emoji
+      iosevka
+      (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
+    ];
+    sans = {
+      name = "SF Pro";
+      size = 11.0;
+    };
+    serif = {
+      name = "New York Medium";
+      size = 11.0;
+    };
+    monospace = {
+      name = "Iosevka";
+      size = 11.0;
+    };
+  };
+
 
   compositors.appearance = {
-    fonts = {
-      packages = with pkgs; [
-        apple-fonts
-        noto-fonts-cjk
-        noto-fonts-emoji
-        iosevka
-        (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
-      ];
-      sans = {
-        name = "SF Pro";
-        size = 11.0;
-      };
-      serif = {
-        name = "New York Medium";
-        size = 11.0;
-      };
-      monospace = {
-        name = "Iosevka";
-        size = 11.0;
-      };
-    };
-
     icons = {
       name = "Papirus-Dark";
       package = pkgs.papirus-icon-theme;
@@ -121,9 +137,4 @@ in
     zsh.enable = true;
   };
 
-  services' = {
-    samba.enable = true;
-    ssh.enable = true;
-    tailscale.enable = true;
-  };
 }

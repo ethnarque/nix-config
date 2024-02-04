@@ -50,6 +50,7 @@
           specialArgs = { inherit inputs lib system username; };
           modules = lib.flatten [
             modules
+            (lib.mkAliasOptionModule [ "hm" ] [ "home-manager" "users" username ])
             (import ./machines/evgeniya)
           ];
         });
@@ -70,8 +71,8 @@
           inherit system;
           specialArgs = { inherit inputs lib system username; };
           modules = lib.flatten [
-            (lib.mkAliasOptionModule [ "hm" ] [ "home-manager" "users" username ])
             modules
+            (lib.mkAliasOptionModule [ "hm" ] [ "home-manager" "users" username ])
             (import ./machines/magda)
           ];
 

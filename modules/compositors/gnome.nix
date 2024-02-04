@@ -17,8 +17,8 @@ in
     (
       if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
       then {
-        compositors.minimal.enable = true;
-        compositors.appearance.enable = true;
+        # compositors.minimal.enable = true;
+        # compositors.appearance.enable = true;
 
         # GNOME
         hardware.pulseaudio.enable = false;
@@ -75,8 +75,6 @@ in
         systemd.services."autovt@tty1".enable = false;
 
         # Custom defaults apps and services
-        services'.avahi.enable = true;
-        services'.printing.enable = true;
 
         apps.valent.enable = true;
         apps.ulauncher.enable = true;
