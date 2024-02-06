@@ -6,10 +6,10 @@ let
     mkMerge
     optionalAttrs;
 
-  cfg = config.machine.gnome;
+  cfg = config.machine.linux.gnome;
 in
 {
-  options.machine.gnome = {
+  options.machine.linux.gnome = {
     enable = lib.mkEnableOption ''
       Gnome
     '';
@@ -34,6 +34,7 @@ in
         evolution
         gnome.evolution-data-server
       ];
+
 
       # GNOME
       hardware.pulseaudio.enable = false;
@@ -90,7 +91,9 @@ in
       systemd.services."autovt@tty1".enable = false;
 
       # Useful packages and extensions
-      home-manager.users.${username} = with lib.hm.gvariant; {
+      hm = with lib.hm.gvariant; {
+        xdg.enable = true;
+
         dconf.settings = {
           "org/gnome/desktop/input-sources" = {
             mru-sources = [ (mkTuple [ "xkb" "us" ]) ];
@@ -234,12 +237,6 @@ in
           };
         };
       };
-
     })
-    (
-      if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
-      then { }
-      else { }
-    )
   ]);
 }

@@ -28,7 +28,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    compositors.appearance = {
+    appearance = {
       darkModeScripts = {
         kitty = ''
           ${pkgs.kitty}/bin/kitty +kitten themes --reload-in=all --config-file-name "current_theme.conf" Rosé\ Pine

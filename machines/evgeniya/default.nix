@@ -22,13 +22,11 @@ in
     yt-dlp
   ];
 
-  machine.linux = {
-    enable = true;
-    hostName = "evgeniya";
-    #hardware.intel.enable = true;
-  };
 
-  machine.gnome.enable = true;
+  machine.linux.enable = true;
+  machine.linux.hostName = "evgeniya";
+
+  machine.linux.gnome.enable = true;
 
   machine.hardware.intel.enable = true;
   machine.hardware.sound.enable = true;
@@ -43,8 +41,6 @@ in
 
   apps.valent.enable = true;
   apps.ulauncher.enable = true;
-
-  #compositors.gnome.enable = true;
 
   appearance.fonts = {
     packages = with pkgs; [
@@ -69,7 +65,7 @@ in
   };
 
 
-  compositors.appearance = {
+  appearance = {
     icons = {
       name = "Papirus-Dark";
       package = pkgs.papirus-icon-theme;

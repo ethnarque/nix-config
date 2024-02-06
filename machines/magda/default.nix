@@ -9,6 +9,8 @@
   machine.darwin.enable = true;
   machine.darwin.touchIdAuth = true;
 
+  machine.darwin.aqua.enable = true;
+
   machine.darwin.homebrew.taps = [
     "koekeishiya/homebrew-formulae"
     "FelixKratz/homebrew-formulae"
@@ -23,19 +25,19 @@
   machine.darwin.homebrew.casks = [
     "affinity-photo"
     "alfred"
+    "appcleaner"
+    "discord"
     "monitorcontrol"
     "mos"
     "radio-silence"
     "the-unarchiver"
+    "transmission"
   ];
 
   machine.hardware.android.enable = true;
 
   machine.services.ssh.enable = true;
   machine.services.tailscale.enable = true;
-
-
-  compositors.darwin.aqua.enable = true;
 
   appearance = {
     fonts = {
@@ -71,17 +73,4 @@
   apps.obinskit.enable = true;
   apps.pass.enable = true;
   apps.zsh.enable = true;
-
-
-  homebrew = {
-    taps = [
-      "homebrew/cask-fonts"
-    ];
-    casks = [
-      "affinity-photo"
-      "discord"
-      "radio-silence"
-      "transmission"
-    ];
-  };
 }

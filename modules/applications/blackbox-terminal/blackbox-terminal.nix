@@ -24,7 +24,7 @@ in
 
       hm =
         let
-          fonts = config.compositors.appearance.fonts;
+          fonts = config.appearance.fonts;
         in
         with lib.hm.gvariant;
         { config, ... }: {

@@ -1,9 +1,12 @@
 { config, lib, options, pkgs, system, username, ... }:
 let
   inherit (lib)
+    isDarwin
+    isLinux
     mkMerge
     mkIf
     mkOption
+    optionalAttrs
     types;
 
   cfg = config.appearance.fonts;
@@ -52,29 +55,26 @@ in
     };
   };
 
-  config = mkIf config.machine.darwin.enable or config.machine.linux.enable (mkMerge [
-    { fonts.fontDir.enable = true; }
-    (
-      if !(builtins.elem system [ "aarch64-darwin" "x86_64-darwin" ])
-      then {
-        fonts = {
-          fontconfig.enable = true;
-          packages = cfg.packages ++ [ ];
-        };
+  config = mkIf config.machine.gnome.enable or config.machine.darwin.enable (mkMerge [
+    (optionalAttrs (isLinux system) {
+      fonts = {
+        fontconfig.enable = true;
+        packages = cfg.packages ++ [ ];
+      };
 
-        home-manager.users.${username} = {
-          gtk = {
-            enable = true;
-            font = {
-              name = cfg.sans.name;
-              size = cfg.sans.size;
-            };
-          };
+      hm.gtk = {
+        enable = true;
+        font = {
+          name = cfg.sans.name;
+          size = cfg.sans.size;
         };
-      }
-      else {
-        fonts.fonts = cfg.packages ++ [ ];
-      }
-    )
+      };
+    })
+
+    (optionalAttrs (isDarwin system) {
+      fonts.fonts = cfg.packages ++ [ ];
+    })
+
+    { fonts.fontDir.enable = true; }
   ]);
 }
