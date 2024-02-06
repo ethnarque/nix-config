@@ -40,7 +40,7 @@
               // home-manager.lib
             );
 
-          modules = import ./modules { inherit lib; };
+          modules = lib.recursiveImports ./modules;
         });
     in
     {

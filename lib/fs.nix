@@ -34,7 +34,7 @@ rec {
         then file
         else dir + "/${file}")
       (lib.filter
-        (file: lib.hasSuffix ".nix" file && file != "default.nix")
+        (file: lib.hasSuffix ".nix" file)
         (mkStringPathList dir));
 }
 
