@@ -83,6 +83,17 @@ in
           dotDir = ".config/zsh";
         };
 
+        programs.zsh.envExtra = concatLines [
+          ''
+            # brew needs to be evaluated in zshenv in order to have it path added
+            ${optionalString (isDarwin system) ''
+              if [[ $(uname -m) == 'arm64' ]]; then
+                  eval "$(/opt/homebrew/bin/brew shellenv)"
+              fi
+            ''}
+          ''
+        ];
+
         programs.zsh.initExtra = concatLines [
           ''
             source ${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh
@@ -90,12 +101,6 @@ in
             bindkey '^[[A' history-substring-search-up
             bindkey '^[OB' history-substring-search-down
             bindkey '^[[B' history-substring-search-down
-
-            ${optionalString (isDarwin system) ''
-              if [[ $(uname -m) == 'arm64' ]]; then
-                  eval "$(/opt/homebrew/bin/brew shellenv)"
-              fi
-            ''}
 
             ${cfg.initExtra}
           ''

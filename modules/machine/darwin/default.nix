@@ -47,6 +47,7 @@ in
 
       homebrew.onActivation.cleanup = "zap";
 
+      homebrew.brews = [ ] ++ cfg.homebrew.brews;
       homebrew.casks = [ ] ++ cfg.homebrew.casks;
 
       homebrew.taps = [
