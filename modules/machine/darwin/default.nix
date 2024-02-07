@@ -49,7 +49,10 @@ in
 
       homebrew.casks = [ ] ++ cfg.homebrew.casks;
 
-      homebrew.taps = [ "homebrew/cask-fonts" ] ++ cfg.homebrew.taps;
+      homebrew.taps = [
+        "homebrew/cask-fonts"
+        "homebrew/services"
+      ] ++ cfg.homebrew.taps;
 
       nix.package = pkgs.nixUnstable;
 
