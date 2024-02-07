@@ -70,6 +70,7 @@
 
   apps.gnupg.enable = true;
   apps.kitty.enable = true;
+  apps.mpv.enable = true;
   apps.obinskit.enable = true;
   apps.pass.enable = true;
   apps.zsh.enable = true;

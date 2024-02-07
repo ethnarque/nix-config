@@ -14,9 +14,10 @@ in
     enable = mkEnableOption ''
       mpv with sane defaults for hardware acceleration
     '';
+
     config = mkOption {
-      type = with types; nullOr attrs;
-      default = null;
+      type = types.attrs;
+      default = { };
     };
   };
 
