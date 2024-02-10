@@ -39,8 +39,8 @@ in
               identityFile = "~/.ssh/id_ed25519.codeberg";
             };
 
-            "ethnarque.co" = {
-              hostname = "ethnarque.co";
+            "moi.ethnarque.co" = {
+              hostname = "moi.ethnarque.co";
               identityFile = "~/.ssh/id_ed25519.hetzner";
             };
 
