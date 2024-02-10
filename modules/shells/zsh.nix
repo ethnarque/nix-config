@@ -35,19 +35,6 @@ in
   };
 
   config = mkIf cfg.enable (mkMerge [
-    (optionalAttrs (isDarwin system)
-      {
-        nixpkgs.overlays = [
-          (final: prev: {
-            darwin-zsh-completions = pkgs.callPackage ../../packages/darwin-zsh-completions.nix { };
-          })
-        ];
-
-        environment.systemPackages = with pkgs; [
-          darwin-zsh-completions
-        ];
-      })
-
     {
       environment.systemPackages = with pkgs; [
         zsh-history-substring-search # the option does not work for me, needed to load it manually
