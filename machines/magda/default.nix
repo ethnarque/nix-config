@@ -29,8 +29,10 @@
     "discord"
     "monitorcontrol"
     "mos"
+    "pokemon-tcg-live"
     "radio-silence"
     "the-unarchiver"
+    "transmission"
     "transmission"
   ];
 
