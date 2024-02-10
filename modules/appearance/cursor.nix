@@ -40,7 +40,7 @@ in
     };
   };
 
-  config = mkIf config.machine.gnome.enable (mkMerge [
+  config = mkIf config.machine.linux.gnome.enable (mkMerge [
     (optionalAttrs (isLinux system) {
       hm.home.pointerCursor = {
         name = cfg.name;

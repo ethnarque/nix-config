@@ -55,7 +55,7 @@ in
     };
   };
 
-  config = mkIf config.machine.gnome.enable or config.machine.darwin.enable (mkMerge [
+  config = mkIf config.machine.linux.gnome.enable or config.machine.darwin.enable (mkMerge [
     (optionalAttrs (isLinux system) {
       fonts = {
         fontconfig.enable = true;

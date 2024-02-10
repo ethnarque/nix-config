@@ -126,7 +126,7 @@ in
       hm.programs.firefox = {
         package = pkgs.firefox.override {
           nativeMessagingHosts = with pkgs;[
-            (optionalAttrs (config.machine.gnome.enable)
+            (optionalAttrs (config.machine.linux.gnome.enable)
               gnome-browser-connector)
 
             (optionalAttrs (config.apps.pass.enable)
