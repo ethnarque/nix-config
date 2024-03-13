@@ -57,7 +57,7 @@
 
   # Apps
   apps.btop.enable = true;
-
+  apps.emacs.enable = true;
   apps.firefox.enable = true;
 
   apps.git = {
