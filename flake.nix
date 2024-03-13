@@ -12,7 +12,7 @@
 
     home-manager.url = "github:nix-community/home-manager";
 
-    nur.url = github:nix-community/NUR;
+    nur.url = "github:nix-community/NUR";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
