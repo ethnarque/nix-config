@@ -39,6 +39,7 @@ in
   machine.services.ssh.enable = true;
   machine.services.tailscale.enable = true;
 
+  apps.emacs.enable = true;
   apps.valent.enable = true;
   apps.ulauncher.enable = true;
 
