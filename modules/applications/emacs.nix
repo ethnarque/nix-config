@@ -1,15 +1,17 @@
-{ config, inputs, lib, pkgs, username, ... }:
+{ config, inputs, lib, pkgs, system, username, ... }:
 
 let
   inherit (lib)
+    isLinux
     mkIf
-    mkEnableOption;
+    mkEnableOption
+    optionalAttrs;
 
-  inherit (pkgs) fetchpatch;
+  inherit (pkgs) emacs-pgtk fetchpatch;
 
   cfg = config.apps.emacs;
 
-  emacsPkg = pkgs.emacs-pgtk.overrideAttrs (old: {
+  emacsDarwinPkg = emacs-pgtk.overrideAttrs (old: {
     patches = (old.patches or [ ])
       ++ [
       # Fix OS window role (needed for window managers like yabai)
@@ -34,6 +36,10 @@ let
       })
     ];
   });
+
+  emacsLinuxPkg = emacs-pgtk;
+
+  emacsPkg = if (isLinux system) then emacsLinuxPkg else emacsDarwinPkg;
 in
 {
   options.apps.emacs = {
