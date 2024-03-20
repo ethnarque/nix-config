@@ -55,11 +55,11 @@ in
     };
   };
 
-  config = mkIf config.machine.linux.gnome.enable or config.machine.darwin.enable (mkMerge [
+  config = mkIf  config.machine.darwin.enable (mkMerge [
     (optionalAttrs (isLinux system) {
       fonts = {
         fontconfig.enable = true;
-        packages = cfg.packages ++ [ ];
+        # packages = cfg.packages ++ [ ];
       };
 
       hm.gtk = {
@@ -69,12 +69,17 @@ in
           size = cfg.sans.size;
         };
       };
+
     })
 
     (optionalAttrs (isDarwin system) {
-      fonts.fonts = cfg.packages ++ [ ];
+      # fonts.fonts = cfg.packages ++ [ ];
     })
 
-    { fonts.fontDir.enable = true; }
+    {
+      fonts.fontDir.enable = true;
+      hm.fonts.fontconfig.enable = true;
+      hm.home.packages = [ ] ++ cfg.packages;
+    }
   ]);
 }

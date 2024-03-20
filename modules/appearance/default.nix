@@ -58,11 +58,11 @@ in
     })
 
     (optionalAttrs (isDarwin system) {
-      nixpkgs.overlays = [
-        (final: prev: {
-          dark-mode-notify = pkgs.callPackage ../../packages/dark-mode-notify.nix { };
-        })
-      ];
+      #nixpkgs.overlays = [
+      #  (final: prev: {
+      #    dark-mode-notify = pkgs.callPackage ../../packages/dark-mode-notify.nix { };
+      #  })
+      #];
 
       launchd.user.agents."ke.ethnarque.dark-mode-notify" = {
         serviceConfig = {
