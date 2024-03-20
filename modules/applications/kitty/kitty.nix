@@ -58,6 +58,7 @@ in
       };
 
       settings = {
+        font_features = "none";
         enable_audio_bell = false;
         allow_remote_control = true;
         update_check_interval = 0;
