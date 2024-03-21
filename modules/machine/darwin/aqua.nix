@@ -48,6 +48,8 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     (optionalAttrs (isDarwin system) {
+      appearance.fonts.enable = true;
+
       system.defaults.NSGlobalDomain = mergeAttrsList [
         {
           AppleInterfaceStyleSwitchesAutomatically = true;

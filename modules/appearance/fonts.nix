@@ -6,6 +6,7 @@ let
     mkMerge
     mkIf
     mkOption
+    mkEnableOption
     optionalAttrs
     types;
 
@@ -13,6 +14,10 @@ let
 in
 {
   options.appearance.fonts = {
+    enable = mkEnableOption ''
+      enable appearance support for machines
+    '';
+
     packages = mkOption {
       type = with types; listOf package;
       default = with pkgs; [ ];
@@ -55,11 +60,11 @@ in
     };
   };
 
-  config = mkIf  config.machine.darwin.enable (mkMerge [
+  config = mkIf cfg.enable (mkMerge [
     (optionalAttrs (isLinux system) {
       fonts = {
         fontconfig.enable = true;
-        # packages = cfg.packages ++ [ ];
+        packages = cfg.packages ++ [ ];
       };
 
       hm.gtk = {
@@ -73,13 +78,12 @@ in
     })
 
     (optionalAttrs (isDarwin system) {
-      # fonts.fonts = cfg.packages ++ [ ];
+      hm.fonts.fontconfig.enable = true;
+      hm.home.packages = [ ] ++ cfg.packages;
     })
 
     {
       fonts.fontDir.enable = true;
-      hm.fonts.fontconfig.enable = true;
-      hm.home.packages = [ ] ++ cfg.packages;
     }
   ]);
 }

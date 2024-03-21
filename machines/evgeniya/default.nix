@@ -39,7 +39,6 @@ in
   machine.services.ssh.enable = true;
   machine.services.tailscale.enable = true;
 
-  apps.emacs.enable = true;
   apps.valent.enable = true;
   apps.ulauncher.enable = true;
 
@@ -48,7 +47,39 @@ in
       apple-fonts
       noto-fonts-cjk
       noto-fonts-emoji
-      iosevka
+        (iosevka.override {
+          set = "custom";
+          privateBuildPlan = {
+            family = "Iosevkarque";
+            spacing = "fontconfig-mono";
+            serifs = "sans";
+            noCvSs = true;
+            exportGlyphNames = true;
+            noLigation = true;
+
+            variants.inherits = "ss15";
+
+            weights.Light = {
+              shape = 300;
+              menu = 300;
+              css = 300;
+            };
+
+            weights.Regular = {
+              shape = 400;
+              menu = 400;
+              css = 400;
+            };
+
+            weights.Bold = {
+              shape = 700;
+              menu = 700;
+              css = 700;
+            };
+            # ligations.inherits = "dlig";
+          };
+        })
+        (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
       (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
     ];
     sans = {
@@ -60,7 +91,7 @@ in
       size = 11.0;
     };
     monospace = {
-      name = "Iosevka";
+      name = "Iosevkarque";
       size = 11.0;
     };
   };

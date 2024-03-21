@@ -17,6 +17,8 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     (optionalAttrs (isLinux system) {
+      appearance.fonts.enable = true;
+
       environment.sessionVariables = {
         NIXOS_OZONE_WL = "1";
       };
