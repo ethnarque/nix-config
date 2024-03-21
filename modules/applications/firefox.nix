@@ -100,22 +100,6 @@ in
             settings = defaultSettings // cfg.settings;
           };
 
-          profiles."downloader" = {
-            id = 1;
-            name = "downloader";
-
-            search.force = true;
-
-            extensions = with config.nur.repos.rycee.firefox-addons;
-              [
-                ublock-origin
-                search-by-image
-                (optionalAttrs (config.apps.pass.enable) browserpass)
-              ]
-              ++ cfg.extensions;
-
-            settings = defaultSettings // mkAfter { };
-          };
         };
       };
     }
