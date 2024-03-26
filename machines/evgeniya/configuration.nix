@@ -21,4 +21,20 @@
   };
 
   time.timeZone = "Europe/Paris";
+
+  services.thermald.enable = true;
+  services.auto-cpufreq.enable = true;
+  services.auto-cpufreq.settings = {
+    battery = {
+      governor = "powersave";
+      turbo = "never";
+    };
+    charger = {
+      governor = "powersave";
+      turbo = "never";
+    };
+  };
+  services.undervolt.enable = true;
+  services.undervolt.gpuOffset = -50;
+  services.undervolt.coreOffset = -125;
 }
