@@ -31,10 +31,10 @@
     };
     charger = {
       governor = "performance";
-      turbo = "never";
+      # turbo = "never";
     };
   };
   services.undervolt.enable = true;
   services.undervolt.gpuOffset = -50;
-  services.undervolt.coreOffset = -125;
+  services.undervolt.coreOffset = -100;
 }
