@@ -31,7 +31,7 @@
     };
     charger = {
       governor = "performance";
-      # turbo = "never";
+      turbo = "auto";
     };
   };
   services.undervolt.enable = true;
