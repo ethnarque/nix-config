@@ -26,9 +26,9 @@ in
       environment.systemPackages = with pkgs; [
         dconf2nix
         gnome.gnome-tweaks
-        gnomeExtensions.caffeine 
+        gnomeExtensions.caffeine
         gnomeExtensions.clipboard-indicator
-        gnomeExtensions.color-picker 
+        gnomeExtensions.color-picker
         gnomeExtensions.dash-to-dock
         gnomeExtensions.disable-workspace-switcher
         gnomeExtensions.move-clock
@@ -190,6 +190,8 @@ in
               "valent@andyholmes.ca"
               "clipboard-indicator@tudmotu.com"
               "dash-to-dock@micxgx.gmail.com"
+              "caffeine@patapon.info"
+              "color-picker@tuberry"
             ];
             favorite-apps = [ "org.gnome.Nautilus.desktop" "org.gnome.Calendar.desktop" "firefox.desktop" ];
           };
