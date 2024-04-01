@@ -1,18 +1,17 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    darwinpkgs.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
 
-    darwin = {
-      url = "github:LnL7/nix-darwin/master";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    darwin.url = "github:LnL7/nix-darwin/master";
+    darwin.inputs.nixpkgs.follows = "darwinpkgs";
 
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-23.11";
 
     nur.url = "github:nix-community/NUR";
 
@@ -47,6 +46,7 @@
 
           modules = lib.recursiveImports ./modules;
         });
+
     in
     {
       nixosConfigurations.evgeniya = mkSystem "x86_64-linux" "pml"

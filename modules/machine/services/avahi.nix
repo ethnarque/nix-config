@@ -19,7 +19,7 @@ in
     (optionalAttrs (isLinux system) {
       services.avahi = {
         enable = true;
-        nssmdns4 = true;
+        nssmdns = true;
         publish = {
           enable = true;
           addresses = true;
