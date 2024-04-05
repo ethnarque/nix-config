@@ -14,6 +14,7 @@
   machine.darwin.homebrew.taps = [
     "koekeishiya/homebrew-formulae"
     "FelixKratz/homebrew-formulae"
+    "homebrew/cask-versions"
   ];
 
   machine.darwin.homebrew.brews = [
@@ -29,6 +30,8 @@
     "discord"
     "monitorcontrol"
     "mos"
+    "iterm2-beta"
+    "sublime-text"
     "pokemon-tcg-live"
     "radio-silence"
     "the-unarchiver"
