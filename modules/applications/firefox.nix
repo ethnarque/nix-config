@@ -99,7 +99,6 @@ in
 
             settings = defaultSettings // cfg.settings;
           };
-
         };
       };
     }
