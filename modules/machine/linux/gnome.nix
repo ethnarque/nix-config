@@ -26,6 +26,7 @@ in
       environment.systemPackages = with pkgs; [
         dconf2nix
         gnome.gnome-tweaks
+        g4music
         gnomeExtensions.caffeine
         gnomeExtensions.clipboard-indicator
         gnomeExtensions.color-picker
@@ -54,11 +55,12 @@ in
       environment.gnome.excludePackages =
         (with pkgs; [
           gnome-tour
-          gnome-console
+          #gnome-console
         ])
         ++ (with pkgs.gnome; [
           gnome-music
           gnome-terminal
+
           epiphany # web browser
           geary # email reader
           # evince # document viewer
