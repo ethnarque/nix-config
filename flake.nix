@@ -5,7 +5,7 @@
     darwinpkgs.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
 
     darwin.url = "github:LnL7/nix-darwin/master";
-    #darwin.inputs.nixpkgs.follows = "darwinpkgs";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
@@ -13,7 +13,7 @@
     };
 
     home-manager.url = "github:nix-community/home-manager/release-23.11";
-    #home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nur.url = "github:nix-community/NUR";
 
