@@ -39,7 +39,7 @@ in
 
           extraConfig = cfg.extraConfig // {
             core = {
-              editor = "nvim";
+              editor = "vim";
             };
             init = {
               defaultBranch = "main";

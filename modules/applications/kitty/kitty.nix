@@ -31,12 +31,12 @@ in
     appearance = {
       darkModeScripts = {
         kitty = ''
-          ${pkgs.kitty}/bin/kitty +kitten themes --reload-in=all --config-file-name "current_theme.conf" Rosé\ Pine
+          ${pkgs.kitty}/bin/kitty +kitten themes --reload-in=all --config-file-name "current_theme.conf" ethnarque\ nuit
         '';
       };
       lightModeScripts = {
         kitty = ''
-          ${pkgs.kitty}/bin/kitty +kitten themes --reload-in=all --config-file-name "current_theme.conf" Rosé\ Pine\ Dawn
+          ${pkgs.kitty}/bin/kitty +kitten themes --reload-in=all --config-file-name "current_theme.conf" ethnarque
         '';
       };
     };
@@ -50,7 +50,7 @@ in
     hm.programs.kitty = {
       enable = true;
 
-      theme = "Rosé Pine";
+      #theme = "ethnarque";
 
       font = {
         name = cfg.font.name;
